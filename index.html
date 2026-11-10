@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard de levantamentos</title>
+<style>
+:root{color-scheme:light;--page:#f4f9fc;--surface:#ffffff;--surface2:#e8f7f8;--ink:#12304a;--muted:#526b80;--ink-muted:var(--muted);--alefe:var(--turquoise);--border:rgba(18,48,74,0.16);--blue:#123f68;--blue-soft:#d9f1f2;--green:#087f8c;--green-soft:#d9f1f2;--yellow:#a66e00;--yellow-soft:#fff1cb;--red:#b73545;--red-soft:#fde8ec;--gray:#74889a;--turquoise:#20b8bd;--shadow:0 1px 2px rgba(18,48,74,0.05), 0 4px 16px rgba(18,48,74,0.08);background:var(--page);color:var(--ink);font:14px "Segoe UI",Arial,sans-serif} :root[data-theme="dark"]{color-scheme:dark;--page:#071b2c;--surface:#0d2942;--surface2:#123b56;--ink:#f5fbff;--muted:#b7cad8;--ink-muted:var(--muted);--alefe:var(--turquoise);--border:rgba(191,226,240,0.20);--blue:#27b9c2;--blue-soft:#164b60;--green:#37c5b8;--green-soft:#164b48;--yellow:#ffd166;--yellow-soft:#55471f;--red:#ff7888;--red-soft:#522d39;--gray:#91a8b8;--turquoise:#28c3c8;--shadow:0 2px 12px rgba(0,0,0,0.18)}:root[data-theme="dark"] tr:hover{background:#14374f}button,input,select{font:inherit}
+.wrap{max-width:1250px;margin:auto;padding:18px 20px 40px}
+header{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);margin-bottom:14px}
+.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--muted);font-weight:700}
+h1{font-size:24px;margin:5px 0 10px}h2{font-size:15px;margin:0 0 4px}.sub{font-size:12px;color:var(--muted);margin-bottom:13px}
+.meta{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px}.meta b{color:var(--ink)}
+.statusbar{display:flex;align-items:center;gap:7px}.dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.order-cell{display:flex;align-items:center;justify-content:center;gap:2px;min-width:48px}.order-num{min-width:18px;text-align:center;font-weight:700}.drag-handle{cursor:grab;color:var(--muted);font-size:13px;padding:0 1px;user-select:none}.drag-handle:active{cursor:grabbing}.dragging{opacity:.45}.drag-over{outline:2px dashed var(--blue);outline-offset:-2px}
+.btn{border:1px solid var(--border);background:var(--surface);color:var(--ink);padding:7px 11px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600}.btn:hover{background:var(--surface2)}.btn.primary{background:var(--turquoise);color:#082c42;border-color:var(--turquoise)}
+.kpis{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-bottom:14px}.kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 14px;box-shadow:var(--shadow)}.kpi .n{font-size:25px;font-weight:750}.kpi .l{font-size:11px;color:var(--muted);margin-top:3px}.good .n{color:var(--green)}.warn .n{color:var(--yellow)}.crit .n{color:var(--red)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:1.45fr 1fr;gap:16px}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:7px}.li{display:flex;align-items:center;gap:5px}.sw{width:10px;height:10px;border-radius:2px}
+.chart{width:100%;height:auto;display:block}.axis{stroke:#b9beb8}.gridline{stroke:#e3e6e2}.planned{stroke:#8a9089}.real{stroke:var(--green)}
+.resp{margin-top:10px}.resp-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}.bar{height:17px;border-radius:5px;background:var(--surface2);overflow:hidden;display:flex;gap:2px}.seg{height:100%}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}.chips{display:flex;gap:5px}.chip{border:1px solid var(--border);background:var(--surface);padding:6px 10px;border-radius:999px;font-size:11px;cursor:pointer}.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.search{flex:1;min-width:180px;border:1px solid var(--border);padding:7px 10px;border-radius:8px;background:var(--surface);color:var(--ink)}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:760px;font-size:12px}th{text-align:left;text-transform:uppercase;letter-spacing:.03em;font-size:10px;color:var(--muted);padding:8px 9px;border-bottom:1px solid var(--border)}td{padding:7px 7px;border-bottom:1px solid #edf0ec;vertical-align:middle}tr:hover{background:#fafbf9}.code{font-size:10px;color:var(--muted)}.cell-input,.cell-select{border:1px solid transparent;background:transparent;padding:4px 5px;border-radius:5px;width:100%}.cell-input:hover,.cell-select:hover,.cell-input:focus,.cell-select:focus{border-color:var(--border);background:white;outline:none}.dur{width:48px;text-align:center}.cell-input[type="date"]{min-width:125px}.date-edit{display:flex;align-items:center;gap:2px}.auto-date{border:0;background:transparent;color:var(--ink-muted);cursor:pointer;font-size:13px;padding:2px 3px}.auto-date:hover{color:var(--alefe)}.justification{min-width:170px}th:nth-child(7),td:nth-child(7),th:nth-child(8),td:nth-child(8),th:nth-child(9),td:nth-child(9){width:72px;padding-left:1px;padding-right:1px}.checkpoint{display:flex;align-items:center;justify-content:center;gap:0;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}.checkpoint input{width:13px;height:13px;accent-color:var(--green);cursor:pointer;margin:0}.checkpoint-date{font-size:10px;color:var(--muted);text-align:center;margin:2px 0 0 0}th:nth-child(1),td:nth-child(1){width:52px;padding-left:2px;padding-right:2px}th:nth-child(2),td:nth-child(2){width:260px}th:nth-child(7),th:nth-child(8),th:nth-child(9){text-align:center}.pill{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700}.p-nao{background:#eef0ed;color:#646a64}.p-and{background:var(--yellow-soft);color:#8b6400}.p-con{background:var(--green-soft);color:#13713a}.p-par{background:#fff0df;color:#a35a00}.p-atr{background:var(--red-soft);color:#a52f2f}
+.empty{text-align:center;padding:25px;color:var(--muted)}
+.note{font-size:11px;color:var(--muted);margin-top:8px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;padding:9px 15px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
+.main-nav{display:flex;gap:8px;margin:12px 0 0;border-bottom:1px solid var(--border)}.nav-tab{border:0;background:transparent;padding:10px 14px;color:var(--muted);font-weight:700;cursor:pointer;border-bottom:3px solid transparent}.nav-tab.active{color:var(--ink);border-color:var(--blue)}
+.work-tools{display:block;margin-bottom:12px}.work-select-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.work-tools select,.modal input,.modal select{border:1px solid var(--border);border-radius:7px;padding:8px;background:#fff}.work-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:11px;padding-top:10px;border-top:1px solid var(--border)}.modal-backdrop{position:fixed;inset:0;background:#0007;z-index:20;display:none;align-items:center;justify-content:center;padding:16px}.modal-backdrop.open{display:flex}.modal{background:#fff;border-radius:14px;padding:20px;width:min(650px,100%);max-height:90vh;overflow:auto;box-shadow:0 12px 40px #0003}.modal h2{font-size:18px;margin-bottom:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-grid label{display:grid;gap:5px;font-size:12px;color:var(--muted)}.front-picker{max-height:240px;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:5px}.front-picker label{font-size:12px;padding:5px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.mini-actions{display:flex;gap:6px;margin:8px 0}.presentation-extra{display:grid;grid-template-columns:1fr 1fr;gap:14px}.presentation-extra .card{margin:0}.work-list{display:flex;gap:8px;flex-wrap:wrap}.work-tag{padding:6px 10px;border-radius:8px;background:var(--surface2);font-size:12px}
+.work-metrics{display:flex;gap:18px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:9px;margin-top:10px;color:var(--muted);font-size:12px;width:100%}.work-metrics b{color:var(--ink)}
+.work-finalization{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:12px;font-weight:700}.work-finalization input{accent-color:var(--green)}.work-finalization .note{font-weight:400;margin:0}
+.header-tools{display:flex;justify-content:flex-end;align-items:center;margin-top:10px}.theme-toggle{border:1px solid var(--border);background:var(--surface2);color:var(--ink);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer}.theme-toggle:hover{background:var(--turquoise);color:#082c42}.modal,.work-tools select,.modal input,.modal select{background:var(--surface);color:var(--ink)}.modal input,.modal select,.work-tools select{border-color:var(--border)}.cell-input,.cell-select{color:var(--ink)}.cell-input:focus,.cell-select:focus{background:var(--surface)!important;color:var(--ink)}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:850px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.wrap{padding:12px}.meta{gap:10px}}
+@media(max-width:600px){.presentation-extra{grid-template-columns:1fr}.form-grid,.front-picker{grid-template-columns:1fr}.nav-tab{flex:1;padding:9px 6px;font-size:12px}.work-select-row select{width:100%}}
+</style>
+
+<style id="frente-completa">
+/* Somente a coluna Frente */
+.table-wrap table th:nth-child(2),
+.table-wrap table td:nth-child(2){
+  width:300px !important;
+  min-width:300px !important;
+  max-width:300px !important;
+}
+
+.table-wrap table td:nth-child(2) .cell-input{
+  width:100% !important;
+  min-width:270px !important;
+  box-sizing:border-box;
+  white-space:nowrap !important;
+  overflow-x:auto !important;
+  overflow-y:hidden;
+  text-overflow:clip !important;
+}
+
+/* Mantém a descrição inteira acessível pela rolagem horizontal da tabela. */
+.table-wrap{
+  overflow-x:auto;
+}
+</style>
+
+
+<style id="alinhamento-tabela">
+.table-wrap table{table-layout:fixed}
+.table-wrap th,.table-wrap td{vertical-align:middle!important}
+.table-wrap th:nth-child(1),.table-wrap td:nth-child(1){text-align:center}
+.table-wrap th:nth-child(2),.table-wrap td:nth-child(2){text-align:left}
+.table-wrap th:nth-child(3),.table-wrap td:nth-child(3),
+.table-wrap th:nth-child(4),.table-wrap td:nth-child(4),
+.table-wrap th:nth-child(5),.table-wrap td:nth-child(5),
+.table-wrap th:nth-child(6),.table-wrap td:nth-child(6),
+.table-wrap th:nth-child(7),.table-wrap td:nth-child(7),
+.table-wrap th:nth-child(8),.table-wrap td:nth-child(8),
+.table-wrap th:nth-child(9),.table-wrap td:nth-child(9),
+.table-wrap th:nth-child(10),.table-wrap td:nth-child(10){text-align:center}
+
+.table-wrap th:nth-child(2),.table-wrap td:nth-child(2){
+ width:300px!important;min-width:300px!important;max-width:300px!important;
+ box-sizing:border-box
+}
+.table-wrap td:nth-child(2) .front-description{
+ display:block;width:100%;box-sizing:border-box;padding:4px 5px;
+ border:1px solid transparent;border-radius:5px;background:transparent;
+ line-height:1.35;white-space:normal;overflow-wrap:anywhere;
+ text-align:left;cursor:text
+}
+.table-wrap td:nth-child(2) .front-description:hover{
+ border-color:var(--border);background:#fff
+}
+.table-wrap td:nth-child(2) .front-code{display:block;margin-top:2px;text-align:left}
+.table-wrap td:nth-child(2) .front-editor{
+ display:block;width:100%;min-height:30px;box-sizing:border-box;
+ resize:none;overflow:hidden;line-height:1.35;white-space:pre-wrap
+}
+</style>
+
+
+<style id="fix-sobreposicao-frente">
+/* Corrige a sobreposição mantendo o restante da tabela intacto. */
+.table-wrap tbody tr{
+  height:auto !important;
+}
+.table-wrap tbody td:nth-child(2){
+  height:auto !important;
+  vertical-align:top !important;
+  overflow:visible !important;
+}
+.table-wrap tbody td:nth-child(2) .front-description{
+  position:static !important;
+  display:block !important;
+  height:auto !important;
+  min-height:20px !important;
+  max-height:none !important;
+  line-height:1.4 !important;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  overflow-wrap:anywhere !important;
+  word-break:normal !important;
+}
+.table-wrap tbody td:nth-child(2) .front-code{
+  position:static !important;
+  display:block !important;
+  line-height:1.2 !important;
+  margin-top:3px !important;
+}
+</style>
+
+
+<style id="fix-symbol-overlap">
+/* X de exclusão: compacto e discreto */
+.delete-x{
+  width:24px;
+  height:24px;
+  padding:0;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--muted);
+  border-radius:6px;
+  cursor:pointer;
+  font-size:17px;
+  line-height:1;
+  font-weight:500;
+}
+.delete-x:hover{
+  background:var(--red-soft);
+  color:var(--red);
+  border-color:rgba(208,59,59,.25);
+}
+
+/* Espaçamento seguro dos controles de data */
+.table-wrap td:nth-child(5),
+.table-wrap td:nth-child(6){
+  min-width:150px;
+}
+.date-edit{
+  display:flex !important;
+  align-items:center !important;
+  gap:5px !important;
+  width:100%;
+}
+.date-edit .cell-input[type="date"]{
+  flex:1 1 auto !important;
+  min-width:118px !important;
+  width:118px !important;
+  box-sizing:border-box;
+}
+.date-edit .auto-date{
+  flex:0 0 22px !important;
+  width:22px !important;
+  min-width:22px !important;
+  height:22px;
+  padding:0 !important;
+  margin:0 !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  z-index:2;
+}
+
+/* Evita qualquer corte/empilhamento dos elementos dentro das datas. */
+.table-wrap td:nth-child(5),
+.table-wrap td:nth-child(6){
+  overflow:visible !important;
+}
+</style>
+
+
+<style id="date-columns-space-fix">
+/* Reserva espaço suficiente para o calendário + botão de cálculo automático,
+   impedindo que os controles avancem para a coluna seguinte. */
+.table-wrap th:nth-child(5),
+.table-wrap td:nth-child(5),
+.table-wrap th:nth-child(6),
+.table-wrap td:nth-child(6){
+  width:190px !important;
+  min-width:190px !important;
+  max-width:190px !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+}
+
+.date-edit{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 24px !important;
+  align-items:center !important;
+  gap:6px !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+
+.date-edit .cell-input[type="date"]{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+  padding-right:6px !important;
+}
+
+.date-edit .auto-date{
+  width:24px !important;
+  min-width:24px !important;
+  max-width:24px !important;
+  height:24px !important;
+  padding:0 !important;
+  margin:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+}
+
+/* Mantém os controles centralizados dentro das duas colunas de data. */
+.table-wrap td:nth-child(5) .date-edit,
+.table-wrap td:nth-child(6) .date-edit{
+  padding:0 2px !important;
+}
+</style>
+
+
+<style id="delete-column-fix">
+/* Coluna exclusiva para excluir, posicionada no extremo direito. */
+.table-wrap th:last-child,
+.table-wrap td:last-child{
+  width:42px !important;
+  min-width:42px !important;
+  max-width:42px !important;
+  padding:5px 4px !important;
+  text-align:center !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+}
+
+.table-wrap td:last-child .delete-x{
+  width:26px !important;
+  height:26px !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid var(--border) !important;
+  border-radius:6px !important;
+  background:var(--surface) !important;
+  color:var(--muted) !important;
+  font-size:17px !important;
+  line-height:1 !important;
+}
+
+/* Evita que a justificativa encoste no botão de excluir. */
+.table-wrap td:nth-last-child(2){
+  padding-right:10px !important;
+}
+.table-wrap td:nth-last-child(2) .justification{
+  box-sizing:border-box !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+
+/* Mantém o X sempre no extremo da linha, sem sobrepor o texto. */
+.table-wrap tbody td:last-child{
+  position:relative !important;
+  z-index:3 !important;
+}
+</style>
+
+
+<style id="delete-layout-final">
+/* Encurta a coluna exclusiva do X */
+.table-wrap th:last-child,
+.table-wrap td:last-child{
+  width:34px !important;
+  min-width:34px !important;
+  max-width:34px !important;
+  padding:3px 2px !important;
+  position:relative !important;
+  box-sizing:border-box !important;
+}
+
+/* X pequeno no canto superior direito de cada linha */
+.table-wrap tbody td:last-child{
+  vertical-align:top !important;
+}
+.table-wrap td:last-child .delete-x{
+  position:absolute !important;
+  top:4px !important;
+  right:3px !important;
+  width:20px !important;
+  height:20px !important;
+  min-width:20px !important;
+  padding:0 !important;
+  margin:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:0 !important;
+  border-radius:4px !important;
+  background:transparent !important;
+  color:var(--muted) !important;
+  font-size:16px !important;
+  line-height:20px !important;
+  font-weight:500 !important;
+  z-index:5 !important;
+}
+.table-wrap td:last-child .delete-x:hover{
+  background:var(--red-soft) !important;
+  color:var(--red) !important;
+}
+
+/* Dá um pequeno respiro à justificativa, sem criar espaço excessivo. */
+.table-wrap td:nth-last-child(2){
+  padding-right:6px !important;
+}
+</style>
+
+
+<style id="keep-horizontal-scroll">
+/* Mantém a barra de rolagem horizontal da tabela. */
+.table-wrap{
+  overflow-x:auto !important;
+  overflow-y:visible !important;
+  width:100% !important;
+}
+
+/* Garante conteúdo horizontal rolável sem alterar o restante do layout. */
+.table-wrap table{
+  min-width:1250px !important;
+}
+</style>
+
+
+
+
+<style id="justificativa-ampliada">
+/* Aumenta somente a coluna Justificativa. */
+.table-wrap th:nth-child(11),
+.table-wrap td:nth-child(11){
+  width:320px !important;
+  min-width:320px !important;
+  max-width:320px !important;
+  box-sizing:border-box !important;
+}
+
+.table-wrap td:nth-child(11) .justification{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+}
+
+/* Mantém uma única barra de rolagem horizontal na própria tabela. */
+.table-wrap{
+  overflow-x:auto !important;
+  overflow-y:visible !important;
+}
+</style>
+
+
+<style id="anti-overlap-final">
+/* =========================================================
+   Regra geral: nenhum conteúdo pode invadir outra coluna.
+   A tabela pode crescer horizontalmente e usa uma única rolagem.
+   ========================================================= */
+.table-wrap{
+  overflow-x:auto !important;
+  overflow-y:visible !important;
+  width:100% !important;
+}
+
+.table-wrap table{
+  table-layout:auto !important;
+  width:max-content !important;
+  min-width:100% !important;
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+}
+
+/* Todas as células respeitam o próprio espaço. */
+.table-wrap th,
+.table-wrap td{
+  box-sizing:border-box !important;
+  overflow:visible !important;
+  vertical-align:middle !important;
+}
+
+/* Coluna ORDEM */
+.table-wrap th:nth-child(1),
+.table-wrap td:nth-child(1){
+  width:52px !important;
+  min-width:52px !important;
+  white-space:nowrap !important;
+}
+
+/* Frente */
+.table-wrap th:nth-child(2),
+.table-wrap td:nth-child(2){
+  width:300px !important;
+  min-width:300px !important;
+  max-width:300px !important;
+}
+.table-wrap td:nth-child(2) .front-description{
+  width:100% !important;
+  box-sizing:border-box !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  word-break:normal !important;
+}
+
+/* Responsável */
+.table-wrap th:nth-child(3),
+.table-wrap td:nth-child(3){
+  width:90px !important;
+  min-width:90px !important;
+  white-space:nowrap !important;
+}
+
+/* Duração */
+.table-wrap th:nth-child(4),
+.table-wrap td:nth-child(4){
+  width:78px !important;
+  min-width:78px !important;
+  white-space:nowrap !important;
+}
+
+/* Datas: espaço suficiente para data + calendário + ↻ */
+.table-wrap th:nth-child(5),
+.table-wrap td:nth-child(5),
+.table-wrap th:nth-child(6),
+.table-wrap td:nth-child(6){
+  width:190px !important;
+  min-width:190px !important;
+  white-space:nowrap !important;
+}
+.date-edit{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 24px 24px !important;
+  gap:6px !important;
+  align-items:center !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+.date-edit .cell-input[type="date"]{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+}
+.date-edit .auto-date{
+  width:24px !important;
+  min-width:24px !important;
+  max-width:24px !important;
+  height:24px !important;
+  margin:0 !important;
+  padding:0 !important;
+  box-sizing:border-box !important;
+}
+
+/* Checkpoints */
+.table-wrap th:nth-child(7),
+.table-wrap td:nth-child(7),
+.table-wrap th:nth-child(8),
+.table-wrap td:nth-child(8),
+.table-wrap th:nth-child(9),
+.table-wrap td:nth-child(9){
+  width:82px !important;
+  min-width:82px !important;
+  max-width:82px !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+}
+.checkpoint{
+  width:100% !important;
+  box-sizing:border-box !important;
+  justify-content:center !important;
+}
+.checkpoint-date{
+  white-space:nowrap !important;
+}
+
+/* Status */
+.table-wrap th:nth-child(10),
+.table-wrap td:nth-child(10){
+  width:105px !important;
+  min-width:105px !important;
+  white-space:nowrap !important;
+  text-align:center !important;
+}
+
+/* Justificativa: ampla, mas sem invadir as outras colunas. */
+.table-wrap th:nth-child(11),
+.table-wrap td:nth-child(11){
+  width:320px !important;
+  min-width:320px !important;
+  max-width:320px !important;
+  box-sizing:border-box !important;
+}
+.table-wrap td:nth-child(11) .justification{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:clip !important;
+}
+
+/* X de excluir: ocupa somente sua própria coluna. */
+.table-wrap th:nth-child(12),
+.table-wrap td:nth-child(12){
+  width:34px !important;
+  min-width:34px !important;
+  max-width:34px !important;
+  padding:3px 2px !important;
+  position:relative !important;
+  box-sizing:border-box !important;
+}
+.table-wrap td:nth-child(12) .delete-x{
+  position:absolute !important;
+  top:4px !important;
+  right:3px !important;
+  width:20px !important;
+  height:20px !important;
+  min-width:20px !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Impede inputs genéricos de ultrapassarem suas células. */
+.table-wrap .cell-input,
+.table-wrap .cell-select{
+  box-sizing:border-box !important;
+  max-width:100% !important;
+}
+
+/* Evita que badges ou textos longos criem sobreposição. */
+.table-wrap .pill{
+  max-width:100% !important;
+  box-sizing:border-box !important;
+}
+</style>
+
+<style id="justification-history-style">
+.history-list{display:flex;flex-direction:column;gap:8px}.history-entry{border:1px solid var(--border);border-radius:9px;padding:10px 12px;background:var(--surface)}.history-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:5px}.history-service{font-weight:700;color:var(--ink)}.history-text{white-space:pre-wrap;overflow-wrap:anywhere}.history-empty{padding:14px;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-size:12px}
+</style>
+<style id="executive-pie-style">
+.presentation-charts{grid-template-columns:minmax(0,1.35fr) minmax(280px,.85fr);align-items:start}.responsible-card{margin-bottom:14px}.status-pie-layout{display:flex;align-items:center;gap:22px;min-height:210px;padding:10px 2px}.status-pie{width:178px;height:178px;flex:0 0 178px;border-radius:50%;position:relative;display:grid;place-items:center}.status-pie::after{content:"";position:absolute;inset:28%;border-radius:50%;background:var(--surface);box-shadow:0 0 0 1px var(--border)}.status-pie-center{z-index:1;text-align:center;line-height:1.2}.status-pie-center strong{display:block;font-size:23px;color:var(--ink)}.status-pie-center span{font-size:10px;color:var(--muted)}.status-pie-legend{display:grid;gap:8px;min-width:0;font-size:11px}.pie-legend-row{display:grid;grid-template-columns:10px minmax(80px,1fr) auto auto;align-items:center;gap:7px}.pie-dot{width:9px;height:9px;border-radius:50%}.pie-value{font-weight:700}.pie-percent{color:var(--muted);min-width:38px;text-align:right}@media(max-width:760px){.presentation-charts{grid-template-columns:1fr}.status-pie-layout{justify-content:center;gap:16px}.status-pie{width:145px;height:145px;flex-basis:145px}}
+</style>
+<style id="work-report-style">
+.report-toolbar{display:flex;gap:10px;align-items:end;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}.report-toolbar label{display:grid;gap:5px;font-size:12px;font-weight:700}.report-toolbar select{min-width:min(380px,80vw);border:1px solid var(--border);border-radius:7px;padding:9px;background:white}.report-actions{display:flex;gap:8px}.report-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}.report-stat{background:var(--surface2);border-radius:9px;padding:12px}.report-stat strong{display:block;font-size:22px}.report-stat span{font-size:11px;color:var(--muted)}.report-table{width:100%;min-width:650px;border-collapse:collapse;font-size:12px}.report-table th,.report-table td{text-align:left;padding:8px;border-bottom:1px solid var(--border)}.report-section{margin-top:18px}.report-section h3{font-size:15px;margin:0 0 4px}.report-period{font-size:11px;color:var(--muted);margin:0 0 8px}.report-work-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:8px 0}.report-status{font-weight:700}.report-empty{padding:12px;color:var(--muted);font-size:12px;border:1px dashed var(--border);border-radius:8px}@media print{body{background:#fff!important;color:#111!important}.wrap{max-width:none;padding:0}header,#presentationPanel,#managementPanel,.modal-backdrop,.toast,#reportToolbar{display:none!important}#reportPanel{display:block!important}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;padding:12px;margin-bottom:10px}.report-table{min-width:0;font-size:10px}.report-table th,.report-table td{padding:5px}.report-section{break-inside:avoid}.report-print-title{display:block!important}}
+#cloudStatus[data-state="success"]{color:var(--green);font-weight:700}
+#cloudStatus[data-state="error"]{color:var(--red);font-weight:700}
+#cloudStatus[data-state="info"]{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Grupo Imerge · Cronograma de Levantamentos</div>
+  <h1 id="title">Dashboard de levantamentos</h1>
+  <div class="meta">
+    <span class="statusbar"><span class="dot"></span> Dashboard compartilhado — <span id="cloudStatus" role="status">Conectando ao banco compartilhado…</span></span>
+  </div>
+  <div class="header-tools"><button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar modo de cores">🌙 Modo escuro</button></div>
+  <nav class="main-nav"><button class="nav-tab active" data-tab="presentation">▤ Visão geral</button><button class="nav-tab" data-tab="management">☷ Gestão das frentes</button><button class="nav-tab" data-tab="reports">▧ Relatórios</button></nav>
+</header>
+
+<div id="presentationPanel"><div class="filters presentation-filter"><label for="execWorkFilter"><b>Obra</b></label><select id="execWorkFilter"><option value="all">Todas as obras</option></select></div><section class="kpis">
+  <div class="kpi"><div class="n" id="total">0</div><div class="l">Frentes no total</div></div>
+  <div class="kpi good"><div class="n" id="done">0</div><div class="l">Concluídas</div></div>
+  <div class="kpi warn"><div class="n" id="doing">0</div><div class="l">Em andamento</div></div>
+  <div class="kpi"><div class="n" id="stopped">0</div><div class="l">Paradas</div></div>
+  <div class="kpi crit"><div class="n" id="delayed">0</div><div class="l">Atrasadas</div></div>
+  <div class="kpi"><div class="n" id="notStarted">0</div><div class="l">Não iniciadas</div></div>
+  <div class="kpi"><div class="n" id="progress">0%</div><div class="l">Progresso geral</div></div>
+</section>
+
+<div class="presentation-extra"><section class="card"><h2>Progresso por obra</h2><div id="workProgress" class="work-list"></div></section></div>
+
+<section class="card responsible-card">
+  <h2>Por responsável</h2>
+  <div class="sub">Distribuição do andamento por responsável cadastrado.</div>
+  <div id="responsible"></div>
+</section>
+
+<section class="card">
+  <div class="grid2 presentation-charts">
+    <div>
+      <h2>Avanço do levantamento</h2>
+      <div class="sub">Planejado x realizado, calculado automaticamente.</div>
+      <div class="legend"><span class="li"><span class="sw" style="background:#8a9089"></span>Planejado</span><span class="li"><span class="sw" style="background:var(--green)"></span>Real</span></div>
+      <div id="chart"></div>
+    </div>
+    <div>
+      <h2>Distribuição por situação</h2>
+      <div class="sub">Situação das frentes e progresso geral.</div>
+      <div id="statusDistribution" class="status-pie-layout"></div>
+    </div>
+  </div>
+</section>
+
+</div><div id="managementPanel" style="display:none"><section class="card"><div class="work-tools"><div class="work-select-row"><label for="workSelect"><b>Obra selecionada</b></label><select id="workSelect"></select></div><div class="work-actions"><button class="btn primary" id="newWorkBtn">+ Nova obra</button><button class="btn" id="editWorkBtn">Editar obra</button><button class="btn" id="deleteWorkBtn">Excluir obra</button><button class="btn" id="libraryBtn">Biblioteca de frentes</button><button class="btn" id="importBtn">Importar dados</button><button class="btn" id="exportBtn">Exportar dados</button><input id="fileInput" type="file" accept=".json,application/json" hidden></div><label class="work-finalization"><input id="workFinalized" type="checkbox"> Obra finalizada <span id="finalizedAt" class="note"></span></label><div class="work-metrics"><span>Início <b id="metaInicio">—</b></span><span>Meta <b id="metaMeta">—</b></span><span>Dias até a meta <b id="metaDias">—</b></span><span>Atualizado <b id="updated">—</b></span></div></div></section>
+
+<section class="card">
+  <h2>Frentes de levantamento</h2>
+  <div class="sub">Edite duração e datas previstas. Use os checkpoints para registrar o andamento, uma eventual parada e a finalização do levantamento. As datas dos checkpoints são registradas automaticamente.</div>
+  <div class="filters">
+    <div class="chips" id="statusFilter">
+      <button class="chip active" data-v="todos">Todas</button>
+      <button class="chip" data-v="nao">Não iniciadas</button>
+      <button class="chip" data-v="and">Em andamento</button><button class="chip" data-v="par">Parados</button>
+      <button class="chip" data-v="con">Concluídas</button>
+      <button class="chip" data-v="atr">Atrasadas</button>
+    </div>
+    <input class="search" id="search" placeholder="Buscar frente ou código...">
+  </div>
+  <div id="count" class="note"></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ORDEM</th><th>Frente</th><th>Resp.</th><th>Duração</th><th>Início prev.</th><th>Término prev.</th><th>EM ANDAMENTO</th><th>PARADO</th><th>FINALIZADO</th><th>Status</th><th>Justificativa</th><th></th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  </div>
+  <div class="note" id="holidayNote">Feriados considerados: —.</div>
+</section>
+<section class="card" id="historyCard">
+  <h2>Histórico de justificativas</h2>
+  <div class="sub">Registro das justificativas alteradas, com data, horário e frente de levantamento correspondente.</div>
+  <div id="justificationHistory"></div>
+</section>
+</div>
+</div>
+<div id="reportPanel" style="display:none">
+  <section class="card" id="reportToolbar"><div class="report-toolbar"><label for="reportWorkSelect">Relatório da obra<select id="reportWorkSelect"></select></label><div class="report-actions"><button class="btn primary" id="exportReportBtn">Baixar relatório em PDF</button></div></div></section>
+  <div class="report-print-title" style="display:none"><h1 id="reportTitle">Relatório da obra</h1><div id="reportSubtitle"></div></div>
+  <section class="card"><h2>Situação geral</h2><div id="reportWorkMeta" class="report-work-meta"></div><div id="reportSummary" class="report-summary"></div><div id="reportOverallStatus"></div></section>
+  <section class="card report-section"><h3>Andamento semanal</h3><p class="report-period" id="reportCurrentPeriod"></p><div id="reportWeeklySummary" class="report-summary"></div><div id="reportCurrentWeek"></div></section>
+  <section class="card report-section"><h3>Planejamento das frentes da próxima semana</h3><p class="report-period" id="reportNextPeriod"></p><div id="reportNextWeek"></div></section>
+</div>
+<div class="modal-backdrop" id="workModal"><div class="modal"><h2 id="workModalTitle">Nova obra</h2><div class="form-grid"><label>Nome da obra<input id="workName"></label><label>Código da obra<input id="workCode"></label><label>Data de início<input id="workStart" type="date"></label><label>Data-meta<input id="workMeta" type="date"></label><label style="grid-column:1/-1">Feriados específicos (AAAA-MM-DD, separados por vírgula)<input id="workHolidays" placeholder="2026-12-25, 2027-01-01"></label></div><h2 style="margin-top:16px">Frentes disponíveis</h2><input id="frontSearch" class="search" placeholder="Pesquisar frente"><div class="mini-actions"><button class="btn" id="selectAllFronts">Selecionar todas</button><button class="btn" id="clearFronts">Desmarcar todas</button></div><div class="front-picker" id="frontPicker"></div><div class="modal-actions"><button class="btn" data-close-modal>Cancelar</button><button class="btn primary" id="saveWorkBtn">Salvar obra</button></div></div></div>
+<div class="modal-backdrop" id="libraryModal"><div class="modal"><h2>Biblioteca de frentes</h2><div class="form-grid"><label>Nome da frente<input id="libName"></label><label>Código EAP<input id="libCode"></label><label>Responsável padrão<input id="libOwner"></label><label>Duração padrão (dias)<input id="libDuration" type="number" min="0.5" step="0.5" value="1"></label></div><div class="modal-actions"><button class="btn" data-close-modal>Fechar</button><button class="btn primary" id="addLibraryFront">Adicionar à biblioteca</button></div><div id="libraryList" style="margin-top:14px"></div></div></div>
+<div class="modal-backdrop" id="justificationModal"><div class="modal"><h2>Justificativa da frente</h2><div class="sub" id="justificationService"></div><div class="form-grid"><label style="grid-column:1/-1">Informe a justificativa<textarea id="justificationText" rows="4" style="resize:vertical;border:1px solid var(--border);border-radius:7px;padding:9px;background:var(--surface);color:var(--ink)"></textarea></label><label>Data de travamento<input id="justificationLockDate" type="date"></label><label>Data de resolução<input id="justificationResolutionDate" type="date"></label></div><div class="modal-actions"><button class="btn" data-close-modal>Cancelar</button><button class="btn primary" id="saveJustificationBtn">Gravar no histórico</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const BASE = {"obra":"CAT002 - Residencial Vitta","codigo":"CAT002","inicio":"2026-10-05","meta":"2026-11-17","feriados":["2026-10-12","2026-11-02","2026-11-20"],"items":[{"id":"i01","ordem":1,"codigo":"1","frente":"Terraplenagem","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":"2026-10-06","paradoEm":null,"inicioPrev":"2026-09-28","terminoPrev":"2026-09-28"},{"id":"i02","ordem":2,"codigo":"1.1","frente":"Pavimentação","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-09-29","paradoEm":"2026-10-06","terminoPrev":"2026-09-29","justificativa":"Sem projeto de pavimentação"},{"id":"i03","ordem":3,"codigo":"2.1","frente":"Estacas","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-09-30","paradoEm":"2026-10-06","justificativa":"Estava pendente projeto de estacas do muro, liberou em 05/10/2026.","terminoPrev":"2026-09-30"},{"id":"i04","ordem":4,"codigo":"2.2","frente":"Radier","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-01","paradoEm":"2026-10-06","justificativa":"Sem projeto do radiê casa de bombas, glp e lixeira.","terminoPrev":"2026-10-01"},{"id":"i05","ordem":5,"codigo":"2.3","frente":"Blocos de Fundação","responsavel":"Alefe","duracao":0.5,"iniciadoEm":"2026-10-06","concluidoEm":null,"inicioPrev":"2026-10-02","terminoPrev":"2026-10-02"},{"id":"i06","ordem":6,"codigo":"2.4","frente":"Baldrames","responsavel":"Alefe","duracao":0.5,"iniciadoEm":"2026-10-06","concluidoEm":null,"inicioPrev":"2026-10-05","terminoPrev":"2026-10-05"},{"id":"i08","ordem":7,"codigo":"4.1","frente":"Est. Forma e Concreto - Blocos","responsavel":"Alefe","duracao":2,"iniciadoEm":"2026-10-06","concluidoEm":null,"inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i09","ordem":8,"codigo":"4.2","frente":"Est. Forma e Concreto - Edículas","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"paradoEm":"2026-10-06","justificativa":"Sem projeto do radiê casa de bombas, glp e lixeira.","inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i10","ordem":9,"codigo":"4.3","frente":"Estrutura de Aço","responsavel":"Alefe","duracao":2,"iniciadoEm":null,"concluidoEm":null,"justificativa":"Sem projeto do radiê casa de bombas, glp e lixeira.","paradoEm":"2026-10-06","inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i11","ordem":10,"codigo":"5","frente":"Alvenaria Estrutural","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"paradoEm":"2026-10-06","justificativa":"Sem projeto do radiê casa de bombas, glp e lixeira.","inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i07","ordem":11,"codigo":"3","frente":"Contenção","responsavel":"Alefe","duracao":1,"iniciadoEm":"2026-10-06","concluidoEm":null,"inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i13","ordem":12,"codigo":"7","frente":"Shafts e Fechamentos","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-13","terminoPrev":"2026-10-13","autoInicio":false,"autoTermino":true},{"id":"i14","ordem":13,"codigo":"8","frente":"Impermeabilização","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-14","terminoPrev":"2026-10-14","autoInicio":true},{"id":"i15","ordem":14,"codigo":"9","frente":"Revestimento de Piso e Pavimentação","responsavel":"Alefe","duracao":3,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-15","terminoPrev":"2026-10-19"},{"id":"i16","ordem":15,"codigo":"10 e 11","frente":"Marmoraria","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-20","terminoPrev":"2026-10-20"},{"id":"i17","ordem":16,"codigo":"12","frente":"Revestimento de Paredes Internas","responsavel":"Alefe","duracao":2,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-20","terminoPrev":"2026-10-21","autoInicio":false,"autoTermino":true},{"id":"i18","ordem":17,"codigo":"13","frente":"Teto e Forros","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-22","terminoPrev":"2026-10-22"},{"id":"i19","ordem":18,"codigo":"14","frente":"Revestimento de Paredes Externas","responsavel":"Alefe","duracao":2,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-23","terminoPrev":"2026-10-26"},{"id":"i41","ordem":19,"codigo":"28","frente":"Fachada","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-27","terminoPrev":"2026-10-27"},{"id":"i42","ordem":20,"codigo":"29","frente":"Esquadrias de Madeira","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-28","terminoPrev":"2026-10-28"},{"id":"i43","ordem":21,"codigo":"30","frente":"Esquadrias de Alumínio","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-29","terminoPrev":"2026-10-29"},{"id":"i44","ordem":22,"codigo":"30","frente":"Esquadrias de Vidro","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-30","terminoPrev":"2026-10-30"},{"id":"i45","ordem":23,"codigo":"31","frente":"Serralheria","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-02","terminoPrev":"2026-11-02"},{"id":"i46","ordem":24,"codigo":"32","frente":"Bancadas","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-03","terminoPrev":"2026-11-03"},{"id":"i49","ordem":25,"codigo":"35","frente":"Paisagismo","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-04","terminoPrev":"2026-11-04","autoTermino":true},{"id":"i47","ordem":26,"codigo":"33","frente":"LMA","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-04","terminoPrev":"2026-11-04","autoTermino":true,"autoInicio":false},{"id":"i48","ordem":27,"codigo":"34","frente":"Cobertura","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-05","terminoPrev":"2026-11-05"},{"id":"i50","ordem":28,"codigo":"36","frente":"Mobiliário","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-05","terminoPrev":"2026-11-05","autoInicio":false}],"versao":"1.0.0"};
+const KEY = "dashboard_levantamentos_datas_organizadas_v3";
+const CLOUD_SUPABASE_URL = "https://awxzjcaelbxlqhldxvns.supabase.co";
+const CLOUD_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_s6iesRwV6kFlU_xXLIzSWg_U0n2FYgA";
+const CLOUD_TABLE = "dashboard_levantamentos_public";
+let cloudClient = null;
+let cloudReady = false;
+let cloudApplying = false;
+let cloudSaving = false;
+let cloudDirty = false;
+let cloudSaveQueued = false;
+let cloudSaveTimer = null;
+let cloudRevision = 0;
+let cloudChannel = null;
+let hasSavedLocalDatabase = false;
+let database = null;
+let activeWorkId = null;
+let migrationFailed = false;
+let state = load();
+let activeTab = "presentation";
+const DASHBOARD_TITLE = "Dashboard de levantamentos";
+function normalizeFirstWorkName(db){const w=db?.obras?.[0];if(w&&((w.nome||w.obra)==="Dashboard de Levantamentos"||(w.nome||w.obra)==="Dashboard de levantamentos")){w.nome="CAT002 - Residencial Vitta";w.obra=w.nome;if(!w.codigo)w.codigo="CAT002";}}
+normalizeFirstWorkName(database);
+function workSnapshot(work){const copy=clone(work);delete copy.updatedAt;return JSON.stringify(copy);}
+let persistedSnapshots=new Map((database?.obras||[]).map(work=>[work.id,workSnapshot(work)]));
+let statusFilter = "todos";
+let query = "";
+if(!Array.isArray(state.justificationHistory)) state.justificationHistory = [];
+
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function makeId(prefix){return prefix+"-"+(globalThis.crypto?.randomUUID?.()||Date.now()+"-"+Math.random().toString(36).slice(2,9));}
+function saveMigration(oldText,next){const backupKey=KEY+"_legacy_backup",payload=JSON.stringify(next);localStorage.setItem(backupKey,oldText);try{localStorage.setItem(KEY,payload);const saved=localStorage.getItem(KEY);if(saved!==payload)throw Error("Falha ao confirmar migração");const check=JSON.parse(saved);if(check.schemaVersion!==2||check.obras?.length!==next.obras.length||check.obras?.[0]?.items?.length!==next.obras?.[0]?.items?.length)throw Error("Migração incompleta");}catch(e){localStorage.setItem(KEY,oldText);throw e;}}
+function load(){
+  try{
+    const saved=localStorage.getItem(KEY);
+    if(saved){const s=JSON.parse(saved);if(s&&s.schemaVersion===2&&Array.isArray(s.obras)){hasSavedLocalDatabase=true;database=s;const selected=s.obras.find(o=>o.id===s.activeWorkId)||s.obras[0];activeWorkId=selected?.id;return selected||clone(BASE)}if(s&&Array.isArray(s.items)){hasSavedLocalDatabase=true;const migrated=clone(s);const id="obra-original";database={schemaVersion:2,migratedAt:new Date().toISOString(),activeWorkId:id,bibliotecaFrentes:[],obras:[{...migrated,id,codigo:"CAT002",nome:"CAT002 - Residencial Vitta",obra:"CAT002 - Residencial Vitta",inicio:migrated.inicio,meta:migrated.meta}]};database.bibliotecaFrentes=libraryFromItems(migrated.items);attachLibraryIds(database.obras[0]);activeWorkId=id;try{saveMigration(saved,database);}catch(e){migrationFailed=true;}return database.obras[0];}}
+  }catch(e){}
+  const first=clone(BASE);first.id="obra-original";first.codigo="CAT002";first.nome="CAT002 - Residencial Vitta";first.obra=first.nome;database={schemaVersion:2,migratedAt:new Date().toISOString(),activeWorkId:first.id,bibliotecaFrentes:libraryFromItems(first.items),obras:[first]};attachLibraryIds(first);activeWorkId=first.id;return first;
+}
+function libraryFromItems(items){const seen=new Set();const current=(items||[]).filter(i=>{const k=String(i.codigo||"")+"|"+String(i.frente||"");if(seen.has(k))return false;seen.add(k);return true}).map(i=>({id:"lib-"+String(i.id),codigo:i.codigo||"",nome:i.frente||"",responsavelPadrao:i.responsavel||"",duracaoPadrao:Number(i.duracao)||1}));const defaults=["Terraplenagem","Pavimentação","Estacas","Radier","Blocos de Fundação","Baldrames","Contenção","Estrutura de Forma e Concreto","Estrutura de Aço","Alvenaria Estrutural","Impermeabilização","Revestimentos","Esquadrias","Fachada","Paisagismo","Mobiliário"];defaults.forEach((nome,i)=>{if(!current.some(f=>f.nome.toLowerCase()===nome.toLowerCase()))current.push({id:"lib-padrao-"+(i+1),codigo:"",nome,responsavelPadrao:"",duracaoPadrao:1});});return current;}
+function attachLibraryIds(work){work.items.forEach(i=>{const f=database.bibliotecaFrentes.find(x=>x.codigo===String(i.codigo||"")&&x.nome===String(i.frente||""));if(f)i.libraryId=f.id;});}
+function save(){
+  if(!database)database={schemaVersion:2,obras:[],bibliotecaFrentes:[]};
+  const idx=database.obras.findIndex(o=>o.id===activeWorkId),existing=idx>=0?database.obras[idx]:null;
+  const snapshot=workSnapshot(state);if(!state.updatedAt||persistedSnapshots.get(activeWorkId)!==snapshot)state.updatedAt=new Date().toISOString();
+  if(idx>=0)database.obras[idx]=state;else{database.obras.push(state);activeWorkId=state.id;}
+  persistedSnapshots.set(activeWorkId,snapshot);
+  database.activeWorkId=activeWorkId;if(!migrationFailed)localStorage.setItem(KEY,JSON.stringify(database));
+  const updated=document.getElementById("updated");if(updated)updated.textContent=new Date(state.updatedAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+  if(cloudReady&&!cloudApplying)scheduleCloudSave();
+}
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function from(s){if(!s)return null;let p=s.split("-").map(Number);return new Date(p[0],p[1]-1,p[2])}
+
+function isWorkDate(date, holidays){const day=date.getDay();return day!==0&&day!==6&&!holidays.has(iso(date));}
+function dateForSlot(startISO,slot,holidays){let d=from(startISO);if(!d)return null;while(!isWorkDate(d,holidays))d.setDate(d.getDate()+1);let remaining=Math.max(0,Math.floor(slot));while(remaining>=2){d.setDate(d.getDate()+1);while(!isWorkDate(d,holidays))d.setDate(d.getDate()+1);remaining-=2;}return iso(d);}
+function slotForDate(startISO,targetISO,holidays){const target=from(targetISO),start=from(startISO);if(!target||!start)return 0;while(!isWorkDate(start,holidays))start.setDate(start.getDate()+1);if(target<=start)return 0;let slots=0,d=new Date(start);while(d<target){d.setDate(d.getDate()+1);if(isWorkDate(d,holidays))slots+=2;}return slots;}
+function calculateSchedule(work=state,force=false,startIndex=0){
+  const holidays=new Set(work.feriados||[]),base=work.inicio||iso(new Date()),cursorByOwner={},result={};
+  const ordered=[...(work.items||[])].sort((a,b)=>(Number(a.ordem)||0)-(Number(b.ordem)||0));
+  for(let index=0;index<ordered.length;index++){
+    const it=ordered[index],owner=String(it.responsavel||"Sem responsável").trim()||"Sem responsável";
+    let cursor=cursorByOwner[owner]??0;const units=Math.max(1,Math.round((Number(it.duracao)||0.5)*2));
+    if(!force&&index<startIndex){
+      if(it.terminoPrev){
+        const priorStart=Math.max(cursor,it.inicioPrev?slotForDate(base,it.inicioPrev,holidays):cursor);
+        const predictedEnd=dateForSlot(base,priorStart+units-1,holidays);
+        const next=predictedEnd===it.terminoPrev?priorStart+units:(it.terminoPrev<base?cursor:slotForDate(base,it.terminoPrev,holidays)+2);
+        cursorByOwner[owner]=Math.max(cursor,next);
+      }
+      result[it.id]={inicio:it.inicioPrev,termino:it.terminoPrev};continue;
+    }
+    let startSlot=cursor;
+    if(!force&&it.autoInicio===false&&it.inicioPrev)startSlot=Math.max(cursor,slotForDate(base,it.inicioPrev,holidays));
+    const start=dateForSlot(base,startSlot,holidays);let endSlot=startSlot+units-1;let end=dateForSlot(base,endSlot,holidays);
+    if(!force&&it.autoTermino===false&&it.terminoPrev){end=it.terminoPrev;endSlot=Math.max(endSlot,slotForDate(base,end,holidays)+1);}
+    it.inicioPrev=start;it.terminoPrev=end;if(force||it.autoInicio!==false)it.autoInicio=true;if(force||it.autoTermino!==false)it.autoTermino=true;
+    cursorByOwner[owner]=endSlot+1;result[it.id]={inicio:start,termino:end};
+  }
+  return result;
+}
+function recalcScheduleFrom(indexStart=0,force=false){return calculateSchedule(state,force,indexStart);}
+
+function fmt(s){if(!s)return "—";let d=from(s);return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+String(d.getFullYear()).slice(-2)}
+function schedule(){
+  const snapshot={...state,items:(state.items||[]).map(it=>({...it}))};return calculateSchedule(snapshot,false);
+}
+function status(it,s){
+  if(it.concluidoEm)return"con";
+  if(it.paradoEm)return"par";
+  if(it.iniciadoEm)return"and";
+  const terminoPrev=it.terminoPrev||s[it.id].termino;
+  if(terminoPrev<iso(new Date()))return"atr";
+  return"nao";
+}
+const labels={nao:"Não iniciado",and:"Em andamento",par:"Parado",con:"Concluído",atr:"Atrasado"};
+function getGlobalDates(s){
+  const starts=state.items
+    .map(it=>it.inicioPrev||s[it.id]?.inicio)
+    .filter(Boolean)
+    .sort();
+  const ends=state.items
+    .map(it=>it.terminoPrev||s[it.id]?.termino)
+    .filter(Boolean)
+    .sort();
+
+  return {
+    inicio: starts[0] || null,
+    meta: ends[ends.length-1] || null
+  };
+}
+
+function setCloudStatus(message,kind="info"){
+  const el=document.getElementById("cloudStatus");
+  if(!el)return;
+  el.textContent=message;
+  el.dataset.state=kind;
+  el.title=kind==="error"?"A sincronização precisa de atenção.":"Estado da sincronização compartilhada";
+}
+function localCloudPayload(){
+  if(!database)throw new Error("Não há dados locais disponíveis para sincronizar.");
+  database.activeWorkId=activeWorkId;
+  return clone(database);
+}
+function applyCloudPayload(payload,revision){
+  if(!payload||payload.schemaVersion!==2||!Array.isArray(payload.obras)||!payload.obras.length)
+    throw new Error("A base compartilhada possui um formato inválido.");
+  cloudApplying=true;
+  try{
+    database=clone(payload);
+    const selected=database.obras.find(w=>w.id===database.activeWorkId)||database.obras[0];
+    activeWorkId=selected.id;
+    state=selected;
+    if(!Array.isArray(state.justificationHistory))state.justificationHistory=[];
+    persistedSnapshots=new Map(database.obras.map(work=>[work.id,workSnapshot(work)]));
+    cloudRevision=Number(revision)||0;
+    render();
+  }finally{cloudApplying=false;}
+}
+function scheduleCloudSave(){
+  if(!cloudReady||cloudApplying)return;
+  cloudDirty=true;
+  cloudSaveQueued=true;
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer=setTimeout(flushCloudSave,850);
+}
+async function flushCloudSave(){
+  if(!cloudReady||cloudApplying)return;
+  if(cloudSaving)return;
+  cloudSaving=true;
+  cloudSaveQueued=false;
+  const expectedRevision=cloudRevision;
+  try{
+    const payload=localCloudPayload();
+    let result;
+    if(expectedRevision===0){
+      result=await cloudClient.from(CLOUD_TABLE).insert({id:1,payload}).select("revision,updated_at").maybeSingle();
+    }else{
+      result=await cloudClient.from(CLOUD_TABLE).update({payload}).eq("id",1).eq("revision",expectedRevision).select("revision,updated_at").maybeSingle();
+    }
+    if(result.error)throw result.error;
+    if(!result.data){
+      cloudReady=false;
+      setCloudStatus("Conflito de edição. Atualize a página.","error");
+      toast("Outra pessoa salvou alterações antes desta gravação. Exporte seus dados locais se precisar preservá-los e atualize a página.");
+      return;
+    }
+    cloudRevision=Number(result.data.revision)||expectedRevision+1;
+    cloudDirty=cloudSaveQueued;
+    setCloudStatus("Sincronizado às "+new Date(result.data.updated_at||Date.now()).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),"success");
+  }catch(error){
+    console.error("Falha na sincronização do Dashboard:",error);
+    setCloudStatus("Falha ao sincronizar. Verifique a conexão.","error");
+    toast("Não foi possível salvar no banco compartilhado. Seus dados locais foram mantidos neste navegador.");
+  }finally{
+    cloudSaving=false;
+    if(cloudSaveQueued&&cloudReady){clearTimeout(cloudSaveTimer);cloudSaveTimer=setTimeout(flushCloudSave,200);}
+  }
+}
+function subscribeCloudChanges(){
+  if(!cloudClient)return;
+  cloudChannel=cloudClient.channel("dashboard-levantamentos-public-sync")
+    .on("postgres_changes",{event:"*",schema:"public",table:CLOUD_TABLE,filter:"id=eq.1"},event=>{
+      const row=event.new;
+      if(!row||!row.payload)return;
+      const incomingRevision=Number(row.revision)||0;
+      if(incomingRevision<=cloudRevision)return;
+      if(cloudSaving)return;
+      if(cloudDirty){
+        cloudReady=false;
+        setCloudStatus("Atualização concorrente. Atualize a página.","error");
+        toast("Outra pessoa alterou o dashboard enquanto você editava. Exporte seus dados locais se necessário e atualize a página para carregar a versão compartilhada.");
+        return;
+      }
+      try{
+        applyCloudPayload(row.payload,incomingRevision);
+        setCloudStatus("Atualizado por outro usuário às "+new Date(row.updated_at||Date.now()).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),"success");
+      }catch(error){console.error(error);setCloudStatus("Erro ao receber atualização.","error");}
+    })
+    .subscribe(status=>{
+      if(status==="CHANNEL_ERROR"||status==="TIMED_OUT")setCloudStatus("Tempo real indisponível. Recarregue a página.","error");
+    });
+}
+async function initializeCloudSync(){
+  try{
+    if(!window.supabase||typeof window.supabase.createClient!=="function")throw new Error("A biblioteca de conexão não foi carregada. Verifique sua internet.");
+    cloudClient=window.supabase.createClient(CLOUD_SUPABASE_URL,CLOUD_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+    setCloudStatus("Conectando…");
+    const {data,error}=await cloudClient.from(CLOUD_TABLE).select("id,payload,revision,updated_at").eq("id",1).maybeSingle();
+    if(error)throw error;
+    if(data){
+      applyCloudPayload(data.payload,data.revision);
+      cloudReady=true;
+      setCloudStatus("Sincronizado às "+new Date(data.updated_at||Date.now()).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),"success");
+    }else if(hasSavedLocalDatabase){
+      const payload=localCloudPayload();
+      const seeded=await cloudClient.from(CLOUD_TABLE).insert({id:1,payload}).select("revision,updated_at").maybeSingle();
+      if(seeded.error){
+        const retry=await cloudClient.from(CLOUD_TABLE).select("id,payload,revision,updated_at").eq("id",1).maybeSingle();
+        if(retry.error||!retry.data)throw seeded.error;
+        applyCloudPayload(retry.data.payload,retry.data.revision);
+      }else{cloudRevision=Number(seeded.data?.revision)||1;}
+      cloudReady=true;
+      setCloudStatus("Base local publicada e sincronizada","success");
+    }else{
+      cloudRevision=0;
+      cloudReady=true;
+      setCloudStatus("Banco compartilhado vazio. Importe seu backup para iniciar.","info");
+    }
+    subscribeCloudChanges();
+  }catch(error){
+    console.error("Não foi possível iniciar a sincronização compartilhada:",error);
+    cloudReady=false;
+    setCloudStatus("Não conectado. Os dados ficam somente neste navegador.","error");
+    toast("O dashboard abriu, mas não conectou ao banco compartilhado. Verifique a configuração e a conexão.");
+  }
+}
+function render(){
+    if(!state.sched)state.sched={};if(!state.feriados)state.feriados=[];
+  const s=schedule();const today=iso(new Date());
+  const globalDates=getGlobalDates(s);
+  const counts={nao:0,and:0,par:0,con:0,atr:0};
+  state.items.forEach(it=>counts[status(it,s)]++);
+  document.getElementById("title").textContent=DASHBOARD_TITLE;
+  document.getElementById("metaInicio").textContent=fmt(state.inicio||globalDates.inicio);
+  document.getElementById("metaMeta").textContent=fmt(state.meta||globalDates.meta);
+  const diff=(state.meta||globalDates.meta)
+    ? Math.ceil((from(state.meta||globalDates.meta)-from(today))/86400000)
+    : null;
+  document.getElementById("metaDias").textContent=
+    diff===null?"—":(diff>=0?diff:Math.abs(diff)+" (atrasado)");
+  document.getElementById("total").textContent=state.items.length;
+  document.getElementById("done").textContent=counts.con;
+  document.getElementById("doing").textContent=counts.and;
+  document.getElementById("stopped").textContent=counts.par;
+  document.getElementById("delayed").textContent=counts.atr;
+  document.getElementById("notStarted").textContent=counts.nao;
+  document.getElementById("progress").textContent=(state.items.length?Math.round(counts.con/state.items.length*100):0)+"%";
+  renderResponsible(counts);
+  renderChart(s);
+  renderTable(s);
+  renderJustificationHistory();
+  updateWorkControls();
+  renderExecutive();
+  renderExecutiveResponsible();
+  refreshExecutiveChart();
+  save();
+}
+function renderResponsible(c){
+  const groups={};state.items.forEach(it=>{const name=it.responsavel||"Sem responsável";groups[name]??={con:0,and:0,par:0,atr:0,nao:0,total:0};const st=status(it,schedule());groups[name][st]++;groups[name].total++;});
+  document.getElementById("responsible").innerHTML=Object.entries(groups).map(([name,g])=>`<div class="resp"><div class="resp-head"><b>${esc(name)}</b><span>${g.con}/${g.total} concluídas</span></div><div class="bar">${[["con","var(--green)"],["and","var(--yellow)"],["par","#e7a35a"],["atr","var(--red)"],["nao","var(--gray)"]].map(([k,color])=>g[k]?`<div class="seg" style="width:${g[k]/g.total*100}%;background:${color}" title="${labels[k]}: ${g[k]}"></div>`:"").join("")}</div></div>`).join("")||"<div class='note'>Nenhuma frente cadastrada.</div>";
+}
+function renderChart(s){
+  const W=700,H=230,L=38,R=12,T=12,B=30, pw=W-L-R,ph=H-T-B,total=state.items.length||1;
+  const dates=[...state.items].map(it=>it.terminoPrev||s[it.id].termino).sort();
+  const real=[...state.items].filter(it=>it.concluidoEm).map(it=>it.concluidoEm).sort();
+  const end=from([state.meta, dates.at(-1)||state.meta, iso(new Date())].sort().at(-1));end.setDate(end.getDate()+3);
+  const start=from(state.inicio);const days=Math.max(1,Math.round((end-start)/86400000));
+  const x=d=>L+Math.max(0,Math.min(days,Math.round((from(d)-start)/86400000)))/days*pw;
+  const y=n=>T+ph-(n/total)*ph;
+  function path(arr){let pts=[[L,y(0)]],n=0;arr.forEach(d=>{pts.push([x(d),y(n)]);n++;pts.push([x(d),y(n)])});pts.push([L+pw,y(n)]);return pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}
+  const grid=[0,.25,.5,.75,1].map(f=>{let n=Math.round(total*f),yy=y(n);return `<line class="gridline" x1="${L}" x2="${L+pw}" y1="${yy}" y2="${yy}"/><text x="${L-7}" y="${yy+3}" text-anchor="end" font-size="9" fill="#70756f">${n}</text>`}).join("");
+  const today=iso(new Date());const tx=(today>=state.inicio&&today<=iso(end))?x(today):null;
+  const todayLine=tx!=null?`<line x1="${tx}" x2="${tx}" y1="${T}" y2="${T+ph}" stroke="#8a9089" stroke-dasharray="3,3"/><text x="${tx}" y="${T-2}" text-anchor="middle" font-size="9" fill="#70756f">hoje</text>`:"";
+  document.getElementById("chart").innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}"><line class="axis" x1="${L}" x2="${L}" y1="${T}" y2="${T+ph}"/><line class="axis" x1="${L}" x2="${L+pw}" y1="${T+ph}" y2="${T+ph}"/>${grid}${todayLine}<path d="${path(dates)}" fill="none" class="planned" stroke-width="2" stroke-dasharray="5,4"/><path d="${path(real)}" fill="none" class="real" stroke-width="2.5"/></svg>`;
+}
+function renderJustificationHistory(){
+  const host=document.getElementById("justificationHistory");
+  const entries=[...(state.justificationHistory||[])].sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)));
+  if(!entries.length){host.innerHTML='<div class="history-empty">Nenhuma justificativa registrada. Use “Informar justificativa” na frente correspondente.</div>';return;}
+  host.innerHTML='<div class="history-list">'+entries.map(entry=>`<div class="history-entry"><div class="history-meta"><span class="history-service">${esc(entry.servico||"Frente sem nome")}</span><span>${esc(entry.dataHora||"")}</span><span>Cód. ${esc(entry.codigo||"—")}</span></div><div class="history-text">${esc(entry.justificativa||"Justificativa apagada")}</div>${entry.dataTravamento||entry.dataResolucao?`<div class="history-meta"><span>Data de travamento: ${fmt(entry.dataTravamento)}</span><span>Data de resolução: ${fmt(entry.dataResolucao)}</span></div>`:""}</div>`).join('')+'</div>';
+}
+
+// Abre explicitamente o seletor nativo de datas no Edge/Chrome.
+ // O listener delegado continua funcionando mesmo após a tabela ser redesenhada.
+document.addEventListener("click", event => {
+  const dateInput = event.target.closest('#tbody input.cell-input[type="date"][data-field]');
+  if (!dateInput || dateInput.disabled) return;
+  try {
+    if (typeof dateInput.showPicker === "function") {
+      dateInput.showPicker();
+    } else {
+      dateInput.focus();
+    }
+  } catch (error) {
+    // Fallback para navegadores que bloqueiam showPicker em alguma situação.
+    dateInput.focus();
+  }
+});
+
+function renderTable(s){
+  const workLocked=Boolean(state.finalizadaEm);
+  const rows=state.items.filter(it=>{
+    const st=status(it,s);
+    const q=query.toLowerCase();
+    return (statusFilter==="todos"||st===statusFilter)&&(!q||(it.frente+" "+it.codigo).toLowerCase().includes(q));
+  }).sort((a,b)=>a.ordem-b.ordem);
+  document.getElementById("count").textContent=`${rows.length} de ${state.items.length} frentes`;
+  document.getElementById("tbody").innerHTML=rows.length?rows.map(it=>{
+    const st=status(it,s);
+    return `<tr>
+      <td><div class="order-cell">
+        <span class="drag-handle" draggable="${workLocked?"false":"true"}" data-drag-id="${it.id}" title="${workLocked?"A obra finalizada está bloqueada":"Arraste para alterar a ordem"}">⋮⋮</span>
+        <span class="order-num">${it.ordem}</span>
+
+      </div></td>
+      <td>
+  <div class="front-description" tabindex="0" data-front-edit="${it.id}" title="Duplo clique para editar">${esc(it.frente)}</div>
+  <div class="code front-code">Cód. ${esc(it.codigo)}</div>
+</td>
+      <td><span class="pill" style="background:var(--blue-soft);color:var(--blue)">${esc(it.responsavel||"—")}</span></td>
+      <td><input class="cell-input dur" type="number" min=".5" step=".5" data-id="${it.id}" data-field="duracao" value="${it.duracao}" ${workLocked?"disabled":""}></td>
+      <td>
+        <div class="date-edit">
+          <input class="cell-input" type="date" data-id="${it.id}" data-field="inicioPrev" value="${it.inicioPrev||""}" ${workLocked?"disabled":""}>
+          <button class="auto-date" type="button" data-id="${it.id}" data-auto="inicio" title="${workLocked?"Desmarque Obra finalizada para alterar as datas":"Usar cálculo automático"}" ${workLocked?"disabled":""}>↻</button>
+        </div>
+      </td>
+      <td>
+        <div class="date-edit">
+          <input class="cell-input" type="date" data-id="${it.id}" data-field="terminoPrev" value="${it.terminoPrev||""}" ${workLocked?"disabled":""}>
+          <button class="auto-date" type="button" data-id="${it.id}" data-auto="termino" title="${workLocked?"Desmarque Obra finalizada para alterar as datas":"Usar cálculo automático"}" ${workLocked?"disabled":""}>↻</button>
+        </div>
+      </td>
+      <td>
+        <label class="checkpoint">
+          <input type="checkbox" data-id="${it.id}" data-checkpoint="iniciadoEm" ${it.iniciadoEm?"checked":""}>
+          
+        </label>
+        <div class="checkpoint-date">${fmt(it.iniciadoEm)}</div>
+      </td>
+      <td>
+        <label class="checkpoint">
+          <input type="checkbox" data-id="${it.id}" data-checkpoint="paradoEm" ${it.paradoEm?"checked":""}>
+          
+        </label>
+        <div class="checkpoint-date">${fmt(it.paradoEm)}</div>
+      </td>
+      <td>
+        <label class="checkpoint">
+          <input type="checkbox" data-id="${it.id}" data-checkpoint="concluidoEm" ${it.concluidoEm?"checked":""}>
+          
+        </label>
+        <div class="checkpoint-date">${fmt(it.concluidoEm)}</div>
+      </td>
+      <td><span class="pill p-${st}">${labels[st]}</span></td>
+      <td><button class="btn justification-trigger" type="button" data-justification="${it.id}">Informar justificativa</button></td>
+      <td><button class="delete-x" data-delete="${it.id}" title="${workLocked?"A obra finalizada está bloqueada":"Excluir"}" aria-label="Excluir" ${workLocked?"disabled":""}>×</button></td>
+    </tr>`
+  }).join(""):`<tr><td colspan="10" class="empty">Nenhuma frente encontrada.</td></tr>`;
+
+  document.querySelectorAll("[data-justification]").forEach(button=>button.addEventListener("click",()=>{const it=state.items.find(x=>x.id===button.dataset.justification);if(!it)return;const modal=document.getElementById("justificationModal");modal.dataset.itemId=it.id;document.getElementById("justificationService").textContent=(it.codigo?it.codigo+" · ":"")+it.frente;document.getElementById("justificationText").value=it.justificativa||"";document.getElementById("justificationLockDate").value=it.dataTravamento||"";document.getElementById("justificationResolutionDate").value=it.dataResolucao||"";modal.classList.add("open");}));
+
+  document.querySelectorAll("[data-move]").forEach(el=>el.addEventListener("click",()=>moveItem(el.dataset.id,el.dataset.move)));
+
+  let draggedId=null;
+  document.querySelectorAll("[data-drag-id]").forEach(handle=>{
+    handle.addEventListener("dragstart",e=>{
+      if(state.finalizadaEm){e.preventDefault();return;}
+      draggedId=handle.dataset.dragId;
+      const row=handle.closest("tr");
+      if(row){row.classList.add("dragging");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",draggedId);}
+    });
+    handle.addEventListener("dragend",()=>{
+      draggedId=null;
+      document.querySelectorAll("#tbody tr").forEach(r=>r.classList.remove("dragging","drag-over"));
+    });
+  });
+  document.querySelectorAll("#tbody tr").forEach(row=>{
+    row.addEventListener("dragover",e=>{
+      if(!draggedId||state.finalizadaEm)return;
+      e.preventDefault();
+      if(row.querySelector(`[data-drag-id="${draggedId}"]`))return;
+      document.querySelectorAll("#tbody tr").forEach(r=>r.classList.remove("drag-over"));
+      row.classList.add("drag-over");
+    });
+    row.addEventListener("drop",e=>{
+      if(!draggedId||state.finalizadaEm)return;
+      e.preventDefault();
+      const targetId=row.querySelector("[data-drag-id]")?.dataset.dragId;
+      if(!targetId||targetId===draggedId)return;
+      const fromIndex=state.items.findIndex(x=>x.id===draggedId);
+      const targetIndex=state.items.findIndex(x=>x.id===targetId);
+      if(fromIndex<0||targetIndex<0)return;
+      const [moved]=state.items.splice(fromIndex,1);
+      const adjustedTarget=fromIndex<targetIndex?targetIndex-1:targetIndex;
+      state.items.splice(adjustedTarget,0,moved);
+      state.items.forEach((item,i)=>item.ordem=i+1);
+      recalcScheduleFrom(Math.min(fromIndex,adjustedTarget));
+      draggedId=null;
+      render();
+      toast("Ordem das frentes atualizada");
+    });
+  });
+
+
+
+  document.querySelectorAll("[data-field]").forEach(el=>el.addEventListener("change",()=>{
+    const it=state.items.find(x=>x.id===el.dataset.id); if(!it)return;
+    const field=el.dataset.field;
+    if(state.finalizadaEm&&["duracao","inicioPrev","terminoPrev"].includes(field))return;
+    const newValue=el.type==="number"?Number(el.value):el.value||null;
+    it[field]=newValue;
+    if(field==="inicioPrev") it.autoInicio=false;
+    if(el.dataset.field==="terminoPrev") it.autoTermino=false;
+    if(field==="duracao"){
+      it.autoInicio=it.autoTermino=true;
+      const owner=it.responsavel||"Sem responsável";
+      state.items.filter(x=>x.ordem>it.ordem&&(x.responsavel||"Sem responsável")===owner).forEach(x=>{x.autoInicio=true;x.autoTermino=true;});
+      const ordered=[...state.items].sort((a,b)=>(Number(a.ordem)||0)-(Number(b.ordem)||0));
+      recalcScheduleFrom(ordered.findIndex(x=>x.id===it.id),false);
+    }
+    render();
+  }));
+
+  
+  document.querySelectorAll(".auto-date").forEach(el=>el.addEventListener("click",()=>{
+    const it=state.items.find(x=>x.id===el.dataset.id); if(!it)return;
+    if(state.finalizadaEm)return;
+    const ordered=[...state.items].sort((a,b)=>(Number(a.ordem)||0)-(Number(b.ordem)||0));
+    const startIndex=ordered.findIndex(x=>x.id===it.id);if(startIndex<0)return;
+    if(!confirm("Recalcular as datas a partir de "+(it.codigo?it.codigo+" · ":"")+(it.frente||"esta frente")+" e das frentes seguintes? As datas anteriores serão preservadas. As datas manuais desta frente e das seguintes serão substituídas pelo cálculo automático."))return;
+    ordered.slice(startIndex).forEach(x=>{x.autoInicio=true;x.autoTermino=true;});
+    recalcScheduleFrom(startIndex,false);
+    render();
+    toast("Datas recalculadas desta frente em diante; as anteriores foram preservadas.");
+  }));
+
+document.querySelectorAll("[data-checkpoint]").forEach(el=>el.addEventListener("change",()=>{
+    const it=state.items.find(x=>x.id===el.dataset.id); if(!it)return;
+    const field=el.dataset.checkpoint;
+    it[field]=el.checked ? iso(new Date()) : null;
+
+    // Apenas um checkpoint pode ficar marcado por frente.
+    if(el.checked){
+      ["iniciadoEm","paradoEm","concluidoEm"].forEach(other=>{if(other!==field)it[other]=null;});
+    }
+    render();
+    const messages={
+      iniciadoEm:"Levantamento em andamento",
+      paradoEm:"Levantamento parado",
+      concluidoEm:"Levantamento finalizado"
+    };
+    toast(el.checked ? messages[field] : "Checkpoint desmarcado");
+  }));
+  document.querySelectorAll("[data-delete]").forEach(el=>el.addEventListener("click",()=>{
+    if(state.finalizadaEm)return;
+    if(confirm("Excluir esta frente?")){const removed=state.items.find(x=>x.id===el.dataset.delete),startIndex=Math.max(0,(removed?.ordem||1)-1);state.items=state.items.filter(x=>x.id!==el.dataset.delete);state.items.sort((a,b)=>a.ordem-b.ordem).forEach((x,i)=>x.ordem=i+1);recalcScheduleFrom(startIndex,false);render()}
+  }));
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+let editingWorkId=null;
+function updateWorkControls(){
+  const options=database.obras.map(o=>'<option value="'+esc(o.id)+'">'+esc(o.nome||o.obra)+(o.codigo?' · '+esc(o.codigo):'')+'</option>').join('');
+  const sel=document.getElementById("workSelect");sel.innerHTML=options;sel.value=activeWorkId;
+  const ex=document.getElementById("execWorkFilter");const selected=ex.value||"all";ex.innerHTML='<option value="all">Todas as obras</option>'+options;ex.value=[...ex.options].some(o=>o.value===selected)?selected:"all";
+  const wc=document.getElementById("workCount");if(wc)wc.textContent=database.obras.length;
+  document.getElementById("title").textContent=DASHBOARD_TITLE;document.title=DASHBOARD_TITLE;
+  document.getElementById("metaInicio").textContent=fmt(state.inicio);document.getElementById("metaMeta").textContent=fmt(state.meta);
+  const diff=state.meta?Math.ceil((from(state.meta)-from(iso(new Date())))/86400000):null;document.getElementById("metaDias").textContent=diff===null?"—":(diff>=0?diff:Math.abs(diff)+" (atrasado)");
+  document.getElementById("updated").textContent=state.updatedAt?new Date(state.updatedAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}):"—";
+  const finalized=Boolean(state.finalizadaEm);document.getElementById("workFinalized").checked=finalized;document.getElementById("finalizedAt").textContent=finalized?"Registrada em "+fmt(state.finalizadaEm)+" · desmarque para liberar datas e prazos":"Desmarcada · datas e prazos liberados";
+  document.getElementById("holidayNote").textContent="Feriados considerados: "+((state.feriados||[]).map(fmt).join(", ")||"nenhum")+".";
+}
+function openWorkModal(work){const locked=Boolean(work?.finalizadaEm);editingWorkId=work?.id||null;document.getElementById("workModalTitle").textContent=work?"Editar obra":"Nova obra";document.getElementById("workName").value=work?.nome||work?.obra||"";document.getElementById("workCode").value=work?.codigo||"";document.getElementById("workStart").value=work?.inicio||"";document.getElementById("workMeta").value=work?.meta||"";document.getElementById("workHolidays").value=(work?.feriados||[]).join(", ");["workStart","workMeta","workHolidays","selectAllFronts","clearFronts"].forEach(id=>document.getElementById(id).disabled=locked);document.getElementById("frontSearch").value="";renderFrontPicker(work);document.getElementById("workModal").classList.add("open");}
+function parseHolidays(){return [...new Set(document.getElementById("workHolidays").value.split(/[\s,;]+/).map(x=>x.trim()).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)))];}
+function renderFrontPicker(work){const selected=new Set((work?.items||[]).map(i=>i.libraryId).filter(Boolean)),locked=Boolean(work?.finalizadaEm);const host=document.getElementById("frontPicker");host.innerHTML=database.bibliotecaFrentes.map(f=>`<label data-front-name="${esc((f.nome+" "+f.codigo).toLowerCase())}"><input type="checkbox" value="${esc(f.id)}" ${selected.has(f.id)?"checked":""} ${locked?"disabled":""}> ${esc(f.nome)} <span class="code">${esc(f.codigo)}</span></label>`).join("")||"<span class='note'>Biblioteca vazia. Cadastre frentes pela biblioteca.</span>";}
+function renderLibrary(){const host=document.getElementById("libraryList");host.innerHTML=database.bibliotecaFrentes.map(f=>`<div class="history-entry" style="display:flex;justify-content:space-between;align-items:center;margin:6px 0"><span><b>${esc(f.nome)}</b> · ${esc(f.codigo)} · ${esc(f.responsavelPadrao||"Sem responsável")} · ${esc(f.duracaoPadrao)} dia(s)</span><button class="btn" data-lib-delete="${esc(f.id)}">Excluir da biblioteca</button></div>`).join("")||"<div class='history-empty'>Nenhuma frente cadastrada.</div>";host.querySelectorAll("[data-lib-delete]").forEach(b=>b.onclick=()=>{if(confirm("Excluir esta frente da biblioteca? As obras que já a utilizam serão preservadas.")){database.bibliotecaFrentes=database.bibliotecaFrentes.filter(f=>f.id!==b.dataset.libDelete);save();renderLibrary();renderFrontPicker(null);}});}
+function renderExecutive(){const filter=document.getElementById("execWorkFilter");const chosen=filter?.value||"all";const works=chosen==="all"?database.obras:database.obras.filter(o=>o.id===chosen);let totals={con:0,and:0,par:0,atr:0,nao:0,n:0};const progress=[];for(const w of works){const s=state;if(w.id===activeWorkId){}else state=w;const sched=schedule();const c={con:0,and:0,par:0,atr:0,nao:0};w.items.forEach(i=>c[status(i,sched)]++);state=s;Object.keys(c).forEach(k=>totals[k]+=c[k]);totals.n+=w.items.length;progress.push({name:w.nome||w.obra,pct:w.items.length?Math.round(c.con/w.items.length*100):0,count:w.items.length});}document.getElementById("total").textContent=totals.n;document.getElementById("done").textContent=totals.con;document.getElementById("doing").textContent=totals.and;document.getElementById("stopped").textContent=totals.par;document.getElementById("delayed").textContent=totals.atr;document.getElementById("notStarted").textContent=totals.nao;const overall=totals.n?Math.round(totals.con/totals.n*100):0;document.getElementById("progress").textContent=overall+"%";document.getElementById("workProgress").innerHTML=progress.map(p=>`<div class="work-tag">${esc(p.name)} · ${p.pct}% (${p.count})</div>`).join("")||"Nenhuma obra";const colors={con:"var(--green)",and:"var(--yellow)",par:"#e7a35a",atr:"var(--red)",nao:"var(--gray)"};let cursor=0;const slices=[];Object.keys(colors).forEach(k=>{const pct=totals.n?totals[k]/totals.n*100:0;if(pct>0){const next=cursor+pct;slices.push(`${colors[k]} ${cursor.toFixed(2)}% ${next.toFixed(2)}%`);cursor=next;}});const gradient=totals.n?`conic-gradient(${slices.join(",")})`:"conic-gradient(#e7ebe6 0% 100%)";document.getElementById("statusDistribution").innerHTML=`<div class="status-pie" role="img" aria-label="Distribuição por situação das frentes" style="background:${gradient}"><div class="status-pie-center"><strong>${overall}%</strong><span>progresso geral</span></div></div><div class="status-pie-legend">${Object.keys(colors).map(k=>`<div class="pie-legend-row"><i class="pie-dot" style="background:${colors[k]}"></i><span>${labels[k]}</span><b class="pie-value">${totals[k]}</b><span class="pie-percent">${totals.n?Math.round(totals[k]/totals.n*100):0}%</span></div>`).join("")}<div class="note">${totals.n} frentes no total</div></div>`;}
+function renderExecutiveResponsible(){const filter=document.getElementById("execWorkFilter");const chosen=filter?.value||"all";const works=chosen==="all"?database.obras:database.obras.filter(o=>o.id===chosen);const groups={};const saved=state;for(const w of works){state=w;const sched=schedule();w.items.forEach(it=>{const name=it.responsavel||"Sem responsável";groups[name]??={con:0,and:0,par:0,atr:0,nao:0,total:0};groups[name][status(it,sched)]++;groups[name].total++;});}state=saved;document.getElementById("responsible").innerHTML=Object.entries(groups).map(([name,g])=>`<div class="resp"><div class="resp-head"><b>${esc(name)}</b><span>${g.con}/${g.total} concluídas</span></div><div class="bar">${[["con","var(--green)"],["and","var(--yellow)"],["par","#e7a35a"],["atr","var(--red)"],["nao","var(--gray)"]].map(([k,color])=>g[k]?`<div class="seg" style="width:${g[k]/g.total*100}%;background:${color}" title="${labels[k]}: ${g[k]}"></div>`:"").join("")}</div></div>`).join("")||"<div class='note'>Nenhuma frente cadastrada.</div>";}
+document.querySelector(".kpis").insertAdjacentHTML("afterbegin",'<div class="kpi"><div class="n" id="workCount">0</div><div class="l">Obras cadastradas</div></div>');
+function refreshExecutiveChart(){const chosen=document.getElementById("execWorkFilter").value;const works=chosen==="all"?database.obras:database.obras.filter(o=>o.id===chosen);const saved=state;const items=[],sched={};let starts=[],ends=[];works.forEach(w=>{state=w;const sc=schedule();w.items.forEach(it=>{const x={...it,id:w.id+"-"+it.id};items.push(x);sched[x.id]=sc[it.id];const a=it.inicioPrev||sc[it.id]?.inicio,b=it.terminoPrev||sc[it.id]?.termino;if(a)starts.push(a);if(b)ends.push(b);});});state={items,inicio:starts.sort()[0]||iso(new Date()),meta:ends.sort().at(-1)||iso(new Date())};renderChart(sched);state=saved;}
+document.getElementById("execWorkFilter").addEventListener("change",()=>{renderExecutive();renderExecutiveResponsible();refreshExecutiveChart();});
+function reportWeekBounds(offset=0){const monday=new Date();monday.setHours(0,0,0,0);const day=(monday.getDay()+6)%7;monday.setDate(monday.getDate()-day+offset*7);const sunday=new Date(monday);sunday.setDate(sunday.getDate()+6);return{start:iso(monday),end:iso(sunday)};}
+function reportDateRange(range){return fmt(range.start)+" – "+fmt(range.end);}
+function reportTable(items){if(!items.length)return '<div class="report-empty">Nenhuma frente planejada para este período.</div>';return `<div class="table-wrap"><table class="report-table"><thead><tr><th>Código EAP</th><th>Frente</th><th>Responsável</th><th>Duração</th><th>Início previsto</th><th>Término previsto</th><th>Situação</th></tr></thead><tbody>${items.map(x=>`<tr><td>${esc(x.codigo||"—")}</td><td>${esc(x.frente||"—")}</td><td>${esc(x.responsavel||"Sem responsável")}</td><td>${esc(x.duracao||"—")} dia(s)</td><td>${fmt(x.inicio)}</td><td>${fmt(x.termino)}</td><td class="report-status">${labels[x.situacao]}</td></tr>`).join("")}</tbody></table></div>`;}
+function renderWorkReport(){const select=document.getElementById("reportWorkSelect"),previous=select.value;select.innerHTML=database.obras.map(w=>`<option value="${esc(w.id)}">${esc(w.nome||w.obra)}${w.codigo?" · "+esc(w.codigo):""}</option>`).join("");select.value=database.obras.some(w=>w.id===previous)?previous:(database.obras.some(w=>w.id===activeWorkId)?activeWorkId:database.obras[0]?.id||"");const work=database.obras.find(w=>w.id===select.value);if(!work){document.getElementById("reportSummary").innerHTML="<div class='report-empty'>Cadastre uma obra para gerar o relatório.</div>";return;}const snapshot={...work,items:(work.items||[]).map(i=>({...i}))};const scheduled=calculateSchedule(snapshot,false);const entries=snapshot.items.map(it=>({...it,inicio:it.inicioPrev||scheduled[it.id]?.inicio,termino:it.terminoPrev||scheduled[it.id]?.termino,situacao:status(it,scheduled)}));const counts={con:0,and:0,par:0,atr:0,nao:0};entries.forEach(x=>counts[x.situacao]++);const total=entries.length,progress=total?Math.round(counts.con/total*100):0;document.getElementById("reportTitle").textContent="Relatório · "+(work.nome||work.obra);document.getElementById("reportSubtitle").textContent=(work.codigo?"Código: "+work.codigo+" · ":"")+"Gerado em "+new Date().toLocaleString("pt-BR");document.getElementById("reportWorkMeta").innerHTML=`<span><b>Obra:</b> ${esc(work.nome||work.obra)}</span>${work.codigo?`<span><b>Código:</b> ${esc(work.codigo)}</span>`:""}<span><b>Início:</b> ${fmt(work.inicio)}</span><span><b>Meta:</b> ${fmt(work.meta)}</span><span><b>Atualizado:</b> ${work.updatedAt?new Date(work.updatedAt).toLocaleString("pt-BR"):"—"}</span>`;document.getElementById("reportSummary").innerHTML=`<div class="report-stat"><strong>${total}</strong><span>Frentes no total</span></div><div class="report-stat"><strong>${progress}%</strong><span>Progresso geral</span></div>${Object.keys(counts).map(k=>`<div class="report-stat"><strong>${counts[k]}</strong><span>${labels[k]}</span></div>`).join("")}`;document.getElementById("reportOverallStatus").innerHTML=`<div class="sub">Distribuição geral: ${Object.keys(counts).map(k=>`${labels[k]} ${total?Math.round(counts[k]/total*100):0}%`).join(" · ")}</div>`;const current=reportWeekBounds(0),next=reportWeekBounds(1),overlaps=(x,r)=>x.inicio&&x.termino&&x.inicio<=r.end&&x.termino>=r.start,weekly=entries.filter(x=>overlaps(x,current)),weeklyCounts={con:0,and:0,par:0,atr:0,nao:0};weekly.forEach(x=>weeklyCounts[x.situacao]++);document.getElementById("reportCurrentPeriod").textContent=reportDateRange(current);document.getElementById("reportNextPeriod").textContent=reportDateRange(next);document.getElementById("reportWeeklySummary").innerHTML=`<div class="report-stat"><strong>${weekly.length}</strong><span>Frentes no período</span></div>${Object.keys(weeklyCounts).map(k=>`<div class="report-stat"><strong>${weeklyCounts[k]}</strong><span>${labels[k]}</span></div>`).join("")}`;document.getElementById("reportCurrentWeek").innerHTML=reportTable(weekly);document.getElementById("reportNextWeek").innerHTML=reportTable(entries.filter(x=>overlaps(x,next)).sort((a,b)=>(a.inicio||"").localeCompare(b.inicio||"")||(Number(a.ordem)||0)-(Number(b.ordem)||0)));}
+function pdfHex(text){const special={8364:128,8218:130,402:131,8222:132,8230:133,8224:134,8225:135,710:136,8240:137,352:138,8249:139,338:140,381:142,8216:145,8217:146,8220:147,8221:148,8226:149,8211:150,8212:151,732:152,8482:153,353:154,8250:155,339:156,382:158,376:159};return [...String(text)].map(ch=>{const cp=ch.codePointAt(0),b=special[cp]??(cp<=255?cp:63);return b.toString(16).padStart(2,"0")}).join("").toUpperCase();}
+function pdfHex(text){const special={8364:128,8218:130,402:131,8222:132,8230:133,8224:134,8225:135,710:136,8240:137,352:138,8249:139,338:140,381:142,8216:145,8217:146,8220:147,8221:148,8226:149,8211:150,8212:151,732:152,8482:153,353:154,8250:155,339:156,382:158,376:159};return [...String(text??"")].map(c=>{let n=c.codePointAt(0),b=special[n]??(n<=255?n:63);return b.toString(16).padStart(2,"0")}).join("").toUpperCase();}
+function makeReportPdf(work,items,counts,weekly,nextItems,periods,issued){
+ const W=842,H=595,M=45,CW=752,N="0.06 0.17 0.29",PET="0.05 0.35 0.43",T="0.06 0.65 0.68",G="0.12 0.55 0.39",Y="0.91 0.64 0.12",R="0.77 0.22 0.25",X="0.42 0.49 0.55",P="0.94 0.96 0.97",WHITE="1 1 1",OPS=[],colors={con:G,and:T,par:Y,atr:R,nao:X},names={con:"Concluídas",and:"Em andamento",par:"Paradas",atr:"Atrasadas",nao:"Não iniciadas"},page={ops:OPS};
+ const num=x=>Number(x).toFixed(2);
+ function text(p,x,y,s,size=6.3,color=N,bold=false){p.ops.push("BT /"+(bold?"F2":"F1")+" "+size+" Tf "+color+" rg 1 0 0 1 "+num(x)+" "+num(H-y)+" Tm <"+pdfHex(s)+"> Tj ET");}
+ function rect(p,x,y,w,h,color,stroke){p.ops.push("q "+color+" rg "+num(x)+" "+num(H-y-h)+" "+num(w)+" "+num(h)+" re f Q");if(stroke)p.ops.push(stroke+" RG 0.4 w "+num(x)+" "+num(H-y-h)+" m "+num(x+w)+" "+num(H-y-h)+" l S");}
+  function roundedPath(p,x,y,w,h,r){const k=.55228475,top=H-y,bottom=H-y-h;p.ops.push(num(x+r)+" "+num(top)+" m "+num(x+w-r)+" "+num(top)+" l "+num(x+w-r+k*r)+" "+num(top)+" "+num(x+w)+" "+num(top-k*r)+" "+num(x+w)+" "+num(top-r)+" c "+num(x+w)+" "+num(bottom+r)+" l "+num(x+w)+" "+num(bottom+r-k*r)+" "+num(x+w-r+k*r)+" "+num(bottom)+" "+num(x+w-r)+" "+num(bottom)+" c "+num(x+r)+" "+num(bottom)+" l "+num(x+r-k*r)+" "+num(bottom)+" "+num(x)+" "+num(bottom+r-k*r)+" "+num(x)+" "+num(bottom+r)+" c "+num(x)+" "+num(top-r)+" l "+num(x)+" "+num(top-r+k*r)+" "+num(x+r-k*r)+" "+num(top)+" "+num(x+r)+" "+num(top)+" c h");}
+ function line(p,x,y,x2,y2,color="0.82 0.87 0.90"){p.ops.push(color+" RG 0.4 w "+num(x)+" "+num(H-y)+" m "+num(x2)+" "+num(H-y2)+" l S");}
+ function wrap(s,max){let out=[],cur="";String(s??"—").replace(/\s+/g," ").trim().split(" ").forEach(w=>{if(!cur)cur=w;else if((cur+" "+w).length<=max)cur+=" "+w;else{out.push(cur);cur=w}});if(cur)out.push(cur);return out.length?out:["—"];}
+ const workName=String(work.nome||work.obra||"Obra"),workCode=String(work.codigo||""),workLabel=workCode&&workName.startsWith(workCode+" - ")?workName.slice(workCode.length+3):workName;
+ const total=items.length,done=counts.con||0,pct=total?Math.round(done/total*100):0;
+ rect(page,M,29,CW,54,N);rect(page,M,82,CW,2,T);text(page,M+11,45,"DASHBOARD DE LEVANTAMENTOS / RELATÓRIO DE ACOMPANHAMENTO",6.5,WHITE,true);text(page,M+11,62,workLabel.slice(0,70),14,WHITE,true);text(page,M+11,75,"Código: "+(work.codigo||"—")+" · Emissão: "+issued+" · Período: "+periods.current,6.2,"0.88 0.92 0.95",true);text(page,M+CW-122,52,"INÍCIO "+fmt(work.inicio),6.1,WHITE,true);text(page,M+CW-122,64,"DATA-META "+fmt(work.meta),6.1,WHITE,true);
+ text(page,M,99,"RESUMO GERAL",7.5,N,true);line(page,M,106,M+CW,106,T);
+ const cards=[[""+total,"Total de frentes",N],[""+(counts.con||0),"Concluídas",G],[""+(counts.and||0),"Em andamento",T],[""+(counts.par||0),"Paradas",Y],[""+(counts.atr||0),"Atrasadas",R],[""+(counts.nao||0),"Não iniciadas",X],[pct+"%","Conclusão geral",PET]],gap=5,cw=(CW-gap*6)/7;
+ cards.forEach((c,i)=>{let x=M+i*(cw+gap);rect(page,x,114,cw,29,P,"0.82 0.87 0.90");rect(page,x,114,2.5,29,c[2]);text(page,x+7,128,c[0],10,c[2],true);text(page,x+7,138,c[1].toUpperCase(),5.6,X);});
+ text(page,M+3,157,"PROGRESSO GERAL",5.8,X,true);rect(page,M+78,149,CW-100,7,"0.89 0.92 0.94");if(pct)rect(page,M+78,149,(CW-100)*pct/100,7,T);text(page,M+CW-22,157,pct+"%",5.8,PET,true);
+ const completed=items.filter(i=>i.situacao==="con"),completedText=completed.length?completed.map(i=>(i.codigo?i.codigo+" · ":"")+(i.frente||"—")).join("   |   "):"Nenhuma frente concluída até a emissão.";
+ const completedLines=wrap(completedText,205);text(page,M,171,"FRENTES CONCLUÍDAS",6.2,G,true);line(page,M,174,M+CW,174,"0.78 0.85 0.88");completedLines.forEach((s,i)=>text(page,M,183+i*6.4,s,5.8,"0.18 0.27 0.34"));
+ let wc={con:0,and:0,par:0,atr:0,nao:0};weekly.forEach(i=>wc[i.situacao]=(wc[i.situacao]||0)+1);
+ const weeklyRows=weekly.map(i=>[i.codigo||"—",i.frente||"—",i.responsavel||"Sem responsável",fmt(i.inicio),fmt(i.termino),names[i.situacao]||"—"]);
+ const planningRows=nextItems.map(i=>[i.codigo||"—",i.frente||"—",i.responsavel||"Sem responsável",fmt(i.inicio),fmt(i.termino),names[i.situacao]||"—"]);
+ const attention=items.filter(i=>i.situacao==="par"||i.situacao==="atr"),attentionRows=attention.map(i=>{let just=[i.justificativa,i.dataTravamento?"Travamento: "+fmt(i.dataTravamento):"",i.dataResolucao?"Resolução: "+fmt(i.dataResolucao):""].filter(Boolean).join(" · ");return[i.codigo||"—",i.frente||"—",i.responsavel||"Sem responsável",names[i.situacao],fmt(i.inicio)+" – "+fmt(i.termino),just||"—"]});
+ const gapTable=12,sw=(CW-gapTable)/2,wCols=[["CÓD.",32,false,"center"],["DESCRIÇÃO DA FRENTE",130,true,"left"],["RESP.",56,false,"center"],["INÍCIO",43,false,"center"],["TÉRMINO",43,false,"center"],["STATUS",66,false,"center"]],aCols=[["CÓD.",34,false,"center"],["FRENTE",170,true,"left"],["RESP.",64,false,"center"],["SITUAÇÃO",72,false,"center"],["PREVISÃO",96,false,"center"],["JUSTIFICATIVA",316,true,"left"]];
+ const tableTop=190+completedLines.length*6.4;
+ text(page,M,tableTop,"ANDAMENTO DA SEMANA | "+periods.current,7,N,true);line(page,M,tableTop+3,M+sw,tableTop+3,T);
+ const summaryLine="No período: "+weekly.length+" frentes · concluídas "+wc.con+" · em andamento "+wc.and+" · não iniciadas "+wc.nao+" · paradas "+wc.par+" · atrasadas "+wc.atr;
+ text(page,M,tableTop+11,summaryLine,5.4,PET,true);
+ text(page,M+sw+gapTable,tableTop,"PLANEJAMENTO DA PRÓXIMA SEMANA | "+periods.next,7,N,true);line(page,M+sw+gapTable,tableTop+3,M+CW,tableTop+3,T);
+ const bodyTop=tableTop+17;
+ function measure(rows,cols,font,extra=0){const lh=font+1;return rows.map(row=>{const cells=cols.map(c=>c.wrap?wrap(row[c.index]??"",Math.max(5,Math.floor((c.width-7)/(font*.50)))):[String(row[c.index]??"—")]);return{cells,height:Math.max(8.2,Math.max(...cells.map(c=>c.length))*lh+1)+extra}});}
+ const weeklyData=weeklyRows.length?weeklyRows:[["—","Nenhuma frente prevista na semana.","—","—","—","—"]],planData=planningRows.length?planningRows:[["—","Nenhuma frente prevista.","—","—","—","—"]],attData=attentionRows.length?attentionRows:[["—","Nenhuma frente parada ou atrasada.","—","—","—","—"]];
+ const mapCols=arr=>arr.map(([label,width,wrapText=false,align="left"],index)=>({label,width,index,wrap:wrapText,align}));const wcols=mapCols(wCols),acols=mapCols(aCols);
+ const attentionTitleY=bodyTop+12+15;
+ const tableBottom=H-48;
+ const fixed=48; // respiro e cabeçalho da seção de atenção
+ let font=6.2;
+ function estimates(f){let side1=measure(weeklyData,wcols,f).reduce((s,r)=>s+r.height,0),side2=measure(planData,wcols,f).reduce((s,r)=>s+r.height,0),att=measure(attData,acols,f).reduce((s,r)=>s+r.height,0);return{side:Math.max(side1,side2),att};}
+ let estimate=estimates(font),available=tableBottom-bodyTop-fixed;
+ while(estimate.side+estimate.att>available&&font>4.3){font=Math.max(4.3,font-.15);estimate=estimates(font);}
+ const rowExtra=Math.min(5,Math.max(0,available-estimate.side-estimate.att)/Math.max(1,Math.max(weeklyData.length,planData.length)+attData.length));const sideHeight=estimate.side+rowExtra*Math.max(weeklyData.length,planData.length);
+  function drawTable(x,y,width,cols,rows,data,font,headerTitle){const lh=font+1,layout=measure(rows,cols,font,rowExtra),tableHeight=14+layout.reduce((sum,r)=>sum+r.height,0);roundedPath(page,x,y,width,tableHeight,4);page.ops.push("1 1 1 rg f");roundedPath(page,x,y,width,tableHeight,4);page.ops.push("0.78 0.84 0.88 RG 0.7 w S");roundedPath(page,x+.7,y+.7,width-1.4,14,3);page.ops.push(N+" rg f");let headerX=x;cols.forEach(c=>{const hf=Math.min(Math.max(4.8,font-.3),(c.width-6)/(Math.max(1,c.label.length)*.48));const tx=c.align==="center"?headerX+(c.width-c.label.length*hf*.48)/2:headerX+3;text(page,tx,y+9.5,c.label,hf,WHITE,true);headerX+=c.width;});let cursor=y+14;layout.forEach((r,i)=>{let h=r.height;if(i%2===0)rect(page,x+1.1,cursor,width-2.2,h,"0.95 0.97 0.98");let cellX=x;r.cells.forEach((parts,j)=>{let statusColor=null;const rowData=data[i]||rows[i],key=Object.keys(names).find(k=>names[k]===rowData[j]);if(key)statusColor=colors[key];const cellFont=Math.max(4.5,Math.min(font,...parts.map(s=>(cols[j].width-7)/(Math.max(1,s.length)*.49))));parts.forEach((s,k)=>{const tx=cols[j].align==="center"?cellX+(cols[j].width-s.length*cellFont*.49)/2:cellX+3;const baseline=cursor+(h-parts.length*lh)/2+cellFont*.82+k*lh;text(page,tx,baseline,s,cellFont,statusColor||(j===0?N:"0.18 0.27 0.34"),j===0)});cellX+=cols[j].width;});line(page,x+1.2,cursor+h,x+width-1.2,cursor+h,"0.84 0.88 0.90");cursor+=h;});roundedPath(page,x,y,width,tableHeight,4);page.ops.push("0.78 0.84 0.88 RG 0.7 w S");return cursor;}
+ drawTable(M,bodyTop,sw,wcols,weeklyData,weeklyRows,font);
+ drawTable(M+sw+12,bodyTop,sw,wcols,planData,planningRows,font);
+ const attentTitle=bodyTop+14+sideHeight+12;
+ text(page,M,attentTitle,"PONTOS DE ATENÇÃO | FRENTES PARADAS E ATRASADAS",7,N,true);line(page,M,attentTitle+3,M+CW,attentTitle+3,T);
+ const attTop=attentTitle+8,attBottom=tableBottom;
+ drawTable(M,attTop,CW,acols,attData,attentionRows,font);
+ line(page,M,H-38,M+CW,H-38,"0.78 0.85 0.88");text(page,M,H-27,"DASHBOARD DE LEVANTAMENTOS · "+(work.codigo||"—")+" - "+workLabel.slice(0,48),5.7,X);text(page,M+CW-180,H-27,"RELATÓRIO DE ACOMPANHAMENTO | PÁGINA 1 DE 1",5.4,X);
+ const objs=["<< /Type /Catalog /Pages 2 0 R >>","<< /Type /Pages /Kids [5 0 R] /Count 1 >>","<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>","<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>","<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "+W+" "+H+"] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>","<< /Length "+OPS.join("\n").length+" >>\nstream\n"+OPS.join("\n")+"\nendstream"];
+ let pdf="%PDF-1.4\n",offsets=[0];objs.forEach((o,i)=>{offsets.push(pdf.length);pdf+=(i+1)+" 0 obj\n"+o+"\nendobj\n"});const xref=pdf.length;pdf+="xref\n0 "+(objs.length+1)+"\n0000000000 65535 f \n";for(let i=1;i<offsets.length;i++)pdf+=String(offsets[i]).padStart(10,"0")+" 00000 n \n";pdf+="trailer\n<< /Size "+(objs.length+1)+" /Root 1 0 R >>\nstartxref\n"+xref+"\n%%EOF";return new Blob([pdf],{type:"application/pdf"});
+}
+function exportWorkReportPdf(){renderWorkReport();let work=database.obras.find(w=>w.id===document.getElementById("reportWorkSelect").value);if(!work)return;let snapshot={...work,items:(work.items||[]).map(i=>({...i}))},scheduleCopy=calculateSchedule(snapshot,false),items=snapshot.items.map(i=>({...i,inicio:i.inicioPrev||scheduleCopy[i.id]?.inicio,termino:i.terminoPrev||scheduleCopy[i.id]?.termino,situacao:status(i,scheduleCopy)})),counts={con:0,and:0,par:0,atr:0,nao:0};items.forEach(i=>counts[i.situacao]++);let current=reportWeekBounds(0),next=reportWeekBounds(1),overlap=(i,r)=>i.inicio&&i.termino&&i.inicio<=r.end&&i.termino>=r.start,inRange=(d,r)=>d&&String(d).slice(0,10)>=r.start&&String(d).slice(0,10)<=r.end,weekly=items.filter(i=>overlap(i,current)||inRange(i.concluidoEm,current)||inRange(i.iniciadoEm,current)||inRange(i.paradoEm,current)),nextItems=items.filter(i=>overlap(i,next)).sort((a,b)=>(a.inicio||"").localeCompare(b.inicio||"")||(Number(a.ordem)||0)-(Number(b.ordem)||0)),issued=new Date().toLocaleDateString("pt-BR"),blob=makeReportPdf(work,items,counts,weekly,nextItems,{current:reportDateRange(current),next:reportDateRange(next)},issued),url=URL.createObjectURL(blob),a=document.createElement("a"),slug=(work.nome||work.obra||"obra").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9]+/g,"_").replace(/^_|_$/g,"");a.href=url;a.download="Relatorio_"+slug+".pdf";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+document.getElementById("reportWorkSelect").addEventListener("change",renderWorkReport);document.getElementById("exportReportBtn").addEventListener("click",exportWorkReportPdf);
+document.getElementById("saveJustificationBtn").addEventListener("click",()=>{const modal=document.getElementById("justificationModal"),it=state.items.find(x=>x.id===modal.dataset.itemId);if(!it)return;const justificativa=document.getElementById("justificationText").value.trim(),dataTravamento=document.getElementById("justificationLockDate").value||null,dataResolucao=document.getElementById("justificationResolutionDate").value||null;if(!justificativa&&!dataTravamento&&!dataResolucao){toast("Informe uma justificativa ou uma das datas");return;}if(!Array.isArray(state.justificationHistory))state.justificationHistory=[];const now=new Date();it.justificativa=justificativa;it.dataTravamento=dataTravamento;it.dataResolucao=dataResolucao;state.justificationHistory.push({timestamp:now.toISOString(),dataHora:now.toLocaleString("pt-BR"),servico:it.frente,codigo:it.codigo||"",justificativa,dataTravamento,dataResolucao});modal.classList.remove("open");render();toast("Justificativa registrada no histórico");});
+const themeKey="dashboard_levantamentos_theme_v1",themeToggle=document.getElementById("themeToggle");function applyTheme(theme){document.documentElement.dataset.theme=theme;const dark=theme==="dark";themeToggle.textContent=dark?"☀️ Modo claro":"🌙 Modo escuro";themeToggle.setAttribute("aria-pressed",String(dark));localStorage.setItem(themeKey,theme);}applyTheme(localStorage.getItem(themeKey)==="dark"?"dark":"light");themeToggle.addEventListener("click",()=>applyTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"));
+document.querySelectorAll(".nav-tab").forEach(b=>b.addEventListener("click",()=>{activeTab=b.dataset.tab;document.getElementById("presentationPanel").style.display=activeTab==="presentation"?"block":"none";document.getElementById("managementPanel").style.display=activeTab==="management"?"block":"none";document.getElementById("reportPanel").style.display=activeTab==="reports"?"block":"none";if(activeTab==="reports")renderWorkReport();document.querySelectorAll(".nav-tab").forEach(x=>x.classList.toggle("active",x===b));}));
+document.getElementById("workSelect").addEventListener("change",e=>{save();activeWorkId=e.target.value;database.activeWorkId=activeWorkId;state=database.obras.find(o=>o.id===activeWorkId);statusFilter="todos";query="";document.getElementById("search").value="";render();});
+document.getElementById("workFinalized").addEventListener("change",e=>{if(e.target.checked)state.finalizadaEm=iso(new Date());else delete state.finalizadaEm;render();toast(e.target.checked?"Obra finalizada: datas e prazos bloqueados":"Datas e prazos da obra liberados");});
+document.getElementById("newWorkBtn").onclick=()=>openWorkModal(null);document.getElementById("editWorkBtn").onclick=()=>openWorkModal(state);document.getElementById("deleteWorkBtn").onclick=()=>{if(database.obras.length<2){toast("É necessário manter ao menos uma obra");return}if(confirm(`Excluir a obra “${state.nome||state.obra}” e seus dados?`)){database.obras=database.obras.filter(o=>o.id!==activeWorkId);activeWorkId=database.obras[0].id;state=database.obras[0];render();}};
+document.getElementById("saveWorkBtn").onclick=()=>{
+  const nome=document.getElementById("workName").value.trim();if(!nome){toast("Informe o nome da obra");return;}
+  const selected=[...document.querySelectorAll("#frontPicker input:checked")].map(x=>x.value),wasEditing=Boolean(editingWorkId);
+  if(wasEditing){
+    const w=database.obras.find(o=>o.id===editingWorkId),locked=Boolean(w.finalizadaEm);w.nome=w.obra=nome;w.codigo=document.getElementById("workCode").value.trim();
+    if(!locked){
+      const oldStart=w.inicio,oldHolidays=JSON.stringify(w.feriados||[]);let recalcIndex=Infinity;
+      w.inicio=document.getElementById("workStart").value||w.inicio;w.meta=document.getElementById("workMeta").value||w.meta;w.feriados=parseHolidays();
+      const keep=new Set(selected);w.items=w.items.filter((item,index)=>{const retain=!item.libraryId||keep.has(item.libraryId);if(!retain)recalcIndex=Math.min(recalcIndex,index);return retain;});
+      selected.forEach(id=>{if(!w.items.some(item=>item.libraryId===id)){const front=database.bibliotecaFrentes.find(x=>x.id===id);if(front){recalcIndex=Math.min(recalcIndex,w.items.length);w.items.push(instanceFront(front,w.items.length+1));}}});
+      w.items.forEach((item,index)=>item.ordem=index+1);if(oldStart!==w.inicio||oldHolidays!==JSON.stringify(w.feriados))recalcIndex=0;
+      if(w.id===activeWorkId&&Number.isFinite(recalcIndex))recalcScheduleFrom(recalcIndex,false);
+    }
+    if(w.id===activeWorkId)state=w;
+  }else{
+    const work={id:makeId("obra"),nome,obra:nome,codigo:document.getElementById("workCode").value.trim(),inicio:document.getElementById("workStart").value||iso(new Date()),meta:document.getElementById("workMeta").value||"",feriados:parseHolidays(),sched:{},justificationHistory:[],items:[]};
+    selected.forEach(id=>{const front=database.bibliotecaFrentes.find(x=>x.id===id);if(front)work.items.push(instanceFront(front,work.items.length+1));});
+    database.obras.push(work);activeWorkId=work.id;state=work;recalcScheduleFrom(0,false);
+  }
+  document.getElementById("workModal").classList.remove("open");render();toast(wasEditing?"Obra atualizada":"Obra cadastrada");
+};
+function instanceFront(f,n){return{id:makeId("frente")+"-"+n,libraryId:f.id,ordem:n,codigo:f.codigo,frente:f.nome,responsavel:f.responsavelPadrao||"",duracao:Number(f.duracaoPadrao)||1,inicioPrev:null,terminoPrev:null,autoInicio:true,autoTermino:true,iniciadoEm:null,paradoEm:null,concluidoEm:null,justificativa:""};}
+document.getElementById("libraryBtn").onclick=()=>{renderLibrary();document.getElementById("libraryModal").classList.add("open")};
+document.getElementById("addLibraryFront").onclick=()=>{const nome=document.getElementById("libName").value.trim();if(!nome){toast("Informe o nome da frente");return}const f={id:makeId("lib"),codigo:document.getElementById("libCode").value.trim(),nome,responsavelPadrao:document.getElementById("libOwner").value.trim(),duracaoPadrao:Number(document.getElementById("libDuration").value)||1};database.bibliotecaFrentes.push(f);save();document.getElementById("libName").value="";document.getElementById("libCode").value="";renderLibrary();toast("Frente adicionada à biblioteca")};
+document.getElementById("frontSearch").addEventListener("input",e=>document.querySelectorAll("#frontPicker label").forEach(l=>l.style.display=l.dataset.frontName.includes(e.target.value.toLowerCase())?"block":"none"));document.getElementById("selectAllFronts").onclick=()=>document.querySelectorAll("#frontPicker input").forEach(x=>x.checked=true);document.getElementById("clearFronts").onclick=()=>document.querySelectorAll("#frontPicker input").forEach(x=>x.checked=false);document.querySelectorAll("[data-close-modal]").forEach(b=>b.onclick=()=>b.closest(".modal-backdrop").classList.remove("open"));
+document.getElementById("statusFilter").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");statusFilter=b.dataset.v;render()});
+document.getElementById("search").addEventListener("input",e=>{query=e.target.value;renderTable(schedule())});
+const BACKUP_SYSTEM_ID="dashboard-levantamentos",BACKUP_FORMAT_VERSION=1;
+function buildDashboardBackup(){try{save()}catch(err){console.warn("O backup usará o estado em memória; não foi possível sincronizar o armazenamento local.",err)}if(!database)throw Error("Não há dados do dashboard para exportar.");database.activeWorkId=activeWorkId;return{systemId:BACKUP_SYSTEM_ID,backupFormatVersion:BACKUP_FORMAT_VERSION,exportedAt:new Date().toISOString(),storageKey:KEY,settings:{activeWorkId,theme:localStorage.getItem(themeKey)==="dark"?"dark":"light"},database:clone(database)}}
+function validateDashboardBackup(payload){let db,settings={};if(payload&&payload.systemId===BACKUP_SYSTEM_ID){if(payload.backupFormatVersion!==BACKUP_FORMAT_VERSION)throw Error("A versão do formato de backup não é compatível.");if(!Number.isFinite(Date.parse(payload.exportedAt||"")))throw Error("A data de exportação do backup é inválida.");if(!payload.database||typeof payload.database!=="object")throw Error("O backup não contém a base de dados.");db=clone(payload.database);settings=payload.settings&&typeof payload.settings==="object"?payload.settings:{}}else if(payload&&payload.schemaVersion===2&&Array.isArray(payload.obras)){db=clone(payload)}else if(payload&&Array.isArray(payload.items)){const w={...clone(payload),id:payload.id||"obra-importada",nome:payload.nome||payload.obra||"Obra importada"};db={schemaVersion:2,activeWorkId:w.id,bibliotecaFrentes:libraryFromItems(w.items),obras:[w]};for(const item of w.items){const f=db.bibliotecaFrentes.find(lib=>lib.codigo===String(item.codigo||"")&&lib.nome===String(item.frente||""));if(f&&!item.libraryId)item.libraryId=f.id}}else throw Error("O arquivo não é um backup reconhecido do Dashboard de Levantamentos.");if(db.schemaVersion!==2||!Array.isArray(db.obras)||!db.obras.length)throw Error("A estrutura do backup não contém obras válidas.");const workIds=new Set();for(const work of db.obras){if(!work||typeof work!=="object"||typeof work.id!=="string"||!work.id.trim()||workIds.has(work.id))throw Error("Há obras sem identificador ou com identificadores duplicados.");workIds.add(work.id);if(!Array.isArray(work.items))throw Error("A obra "+(work.nome||work.obra||work.id)+" não contém uma lista válida de frentes.");const itemIds=new Set();for(const item of work.items){if(!item||typeof item!=="object"||typeof item.id!=="string"||!item.id.trim()||itemIds.has(item.id))throw Error("Há frentes sem identificador ou com identificadores duplicados na obra "+(work.nome||work.id)+".");itemIds.add(item.id)}}if(db.bibliotecaFrentes==null)db.bibliotecaFrentes=libraryFromItems(db.obras.flatMap(w=>w.items));if(!Array.isArray(db.bibliotecaFrentes))throw Error("A biblioteca de frentes possui estrutura inválida.");const libraryIds=new Set();for(const front of db.bibliotecaFrentes){if(!front||typeof front!=="object"||typeof front.id!=="string"||!front.id.trim()||libraryIds.has(front.id))throw Error("A biblioteca contém registros sem identificador ou identificadores duplicados.");libraryIds.add(front.id)}if(!workIds.has(db.activeWorkId))db.activeWorkId=db.obras[0].id;if(settings.theme!=="dark"&&settings.theme!=="light")settings.theme=null;normalizeFirstWorkName(db);return{database:db,settings}}
+function restoreDashboardBackup(validated){const previous={raw:localStorage.getItem(KEY),theme:localStorage.getItem(themeKey),database,state,activeWorkId,persistedSnapshots};const next=validated.database,target=JSON.stringify(next),nextActive=next.obras.find(w=>w.id===next.activeWorkId);try{localStorage.setItem(KEY,target);if(localStorage.getItem(KEY)!==target)throw Error("Não foi possível confirmar a gravação do backup no armazenamento local.");database=next;activeWorkId=nextActive.id;state=nextActive;persistedSnapshots=new Map(next.obras.map(work=>[work.id,workSnapshot(work)]));render();if(validated.settings.theme)applyTheme(validated.settings.theme);return true}catch(err){try{if(previous.raw===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,previous.raw);if(previous.theme===null)localStorage.removeItem(themeKey);else localStorage.setItem(themeKey,previous.theme)}catch(restoreError){console.error("Falha ao restaurar o armazenamento anterior após erro de importação.",restoreError)}database=previous.database;state=previous.state;activeWorkId=previous.activeWorkId;persistedSnapshots=previous.persistedSnapshots;try{render();if(previous.theme)applyTheme(previous.theme)}catch(renderError){console.error("Falha ao redesenhar o estado anterior.",renderError)}throw Error("A restauração falhou e os dados anteriores foram preservados. Detalhe: "+err.message)}}
+function backupFileTimestamp(date){const p=n=>String(n).padStart(2,"0");return date.getFullYear()+"-"+p(date.getMonth()+1)+"-"+p(date.getDate())+"_"+p(date.getHours())+"-"+p(date.getMinutes())}
+document.getElementById("exportBtn").addEventListener("click",()=>{try{const backup=buildDashboardBackup(),blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="Backup_Dashboard_Levantamentos_"+backupFileTimestamp(new Date(backup.exportedAt))+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("Exportação concluída: backup completo baixado.")}catch(err){alert("Não foi possível exportar os dados. "+err.message)}});
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("fileInput").click());
+document.getElementById("fileInput").addEventListener("change",e=>{const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onerror=()=>{alert("Não foi possível ler o arquivo selecionado.");e.target.value=""};reader.onload=()=>{try{const validated=validateDashboardBackup(JSON.parse(reader.result)),db=validated.database,workCount=db.obras.length,frontCount=db.obras.reduce((sum,w)=>sum+w.items.length,0),exportDate=reader.result&&JSON.parse(reader.result).exportedAt?new Date(JSON.parse(reader.result).exportedAt).toLocaleString("pt-BR"):"data não informada",message="Backup: "+exportDate+"\nObras: "+workCount+"\nFrentes: "+frontCount+"\n\nA restauração substituirá todos os dados atuais. Deseja continuar?";if(!confirm(message))return;restoreDashboardBackup(validated);toast("Backup restaurado: "+workCount+" obras e "+frontCount+" frentes.")}catch(err){alert(err.message||"Arquivo JSON inválido ou incompatível. Os dados atuais não foram alterados.")}finally{e.target.value=""}};reader.readAsText(file)});
+render();
+initializeCloudSync();
+if(migrationFailed)toast("A migração não pôde ser gravada. Os dados antigos foram preservados e as alterações desta sessão não serão persistidas.");
+</script>
+
+<script id="front-description-editor">
+(function(){
+  function autoSize(el){
+    el.style.height="auto";
+    el.style.height=Math.max(30,el.scrollHeight)+"px";
+  }
+  document.addEventListener("dblclick",function(e){
+    const view=e.target.closest("[data-front-edit]");
+    if(!view)return;
+    const id=view.dataset.frontEdit;
+    const it=state.items.find(x=>x.id===id);
+    if(!it)return;
+    const ta=document.createElement("textarea");
+    ta.className="cell-input front-editor";
+    ta.value=it.frente||"";
+    ta.rows=1;
+    view.replaceWith(ta);
+    autoSize(ta);
+    ta.focus();
+    ta.select();
+    let done=false;
+    function finish(saveValue){
+      if(done)return;
+      done=true;
+      const item=state.items.find(x=>x.id===id);
+      if(item && saveValue)item.frente=ta.value.trim()||item.frente;
+      render();
+    }
+    ta.addEventListener("input",()=>autoSize(ta));
+    ta.addEventListener("blur",()=>finish(true));
+    ta.addEventListener("keydown",ev=>{
+      if(ev.key==="Escape"){ev.preventDefault();finish(false)}
+      if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();finish(true)}
+    });
+  });
+})();
+</script>
+
+
+
+</body>
+</html>
