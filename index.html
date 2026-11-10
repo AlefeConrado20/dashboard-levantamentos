@@ -20,7 +20,7 @@ h1{font-size:24px;margin:5px 0 10px}h2{font-size:15px;margin:0 0 4px}.sub{font-s
 .grid2{display:grid;grid-template-columns:1.45fr 1fr;gap:16px}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:7px}.li{display:flex;align-items:center;gap:5px}.sw{width:10px;height:10px;border-radius:2px}
 .chart{width:100%;height:auto;display:block}.axis{stroke:#b9beb8}.gridline{stroke:#e3e6e2}.planned{stroke:#8a9089}.real{stroke:var(--green)}
 .resp{margin-top:10px}.resp-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}.bar{height:17px;border-radius:5px;background:var(--surface2);overflow:hidden;display:flex;gap:2px}.seg{height:100%}
-.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}.chips{display:flex;gap:5px}.chip{border:1px solid var(--border);background:var(--surface);padding:6px 10px;border-radius:999px;font-size:11px;cursor:pointer}.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}.chips{display:flex;gap:5px}.chip{border:1px solid var(--border);background:var(--surface);padding:6px 10px;border-radius:999px;font-size:11px;cursor:pointer}.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}:root[data-theme="dark"] .chip.active{background:var(--turquoise);border-color:var(--turquoise);color:#062b3d}
 .search{flex:1;min-width:180px;border:1px solid var(--border);padding:7px 10px;border-radius:8px;background:var(--surface);color:var(--ink)}
 .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:760px;font-size:12px}th{text-align:left;text-transform:uppercase;letter-spacing:.03em;font-size:10px;color:var(--muted);padding:8px 9px;border-bottom:1px solid var(--border)}td{padding:7px 7px;border-bottom:1px solid #edf0ec;vertical-align:middle}tr:hover{background:#fafbf9}.code{font-size:10px;color:var(--muted)}.cell-input,.cell-select{border:1px solid transparent;background:transparent;padding:4px 5px;border-radius:5px;width:100%}.cell-input:hover,.cell-select:hover,.cell-input:focus,.cell-select:focus{border-color:var(--border);background:white;outline:none}.dur{width:48px;text-align:center}.cell-input[type="date"]{min-width:125px}.date-edit{display:flex;align-items:center;gap:2px}.auto-date{border:0;background:transparent;color:var(--ink-muted);cursor:pointer;font-size:13px;padding:2px 3px}.auto-date:hover{color:var(--alefe)}.justification{min-width:170px}th:nth-child(7),td:nth-child(7),th:nth-child(8),td:nth-child(8),th:nth-child(9),td:nth-child(9){width:72px;padding-left:1px;padding-right:1px}.checkpoint{display:flex;align-items:center;justify-content:center;gap:0;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}.checkpoint input{width:13px;height:13px;accent-color:var(--green);cursor:pointer;margin:0}.checkpoint-date{font-size:10px;color:var(--muted);text-align:center;margin:2px 0 0 0}th:nth-child(1),td:nth-child(1){width:52px;padding-left:2px;padding-right:2px}th:nth-child(2),td:nth-child(2){width:260px}th:nth-child(7),th:nth-child(8),th:nth-child(9){text-align:center}.pill{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700}.p-nao{background:#eef0ed;color:#646a64}.p-and{background:var(--yellow-soft);color:#8b6400}.p-con{background:var(--green-soft);color:#13713a}.p-par{background:#fff0df;color:#a35a00}.p-atr{background:var(--red-soft);color:#a52f2f}
 .empty{text-align:center;padding:25px;color:var(--muted)}
@@ -575,9 +575,25 @@ h1{font-size:24px;margin:5px 0 10px}h2{font-size:15px;margin:0 0 4px}.sub{font-s
 </style>
 <style id="work-report-style">
 .report-toolbar{display:flex;gap:10px;align-items:end;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}.report-toolbar label{display:grid;gap:5px;font-size:12px;font-weight:700}.report-toolbar select{min-width:min(380px,80vw);border:1px solid var(--border);border-radius:7px;padding:9px;background:white}.report-actions{display:flex;gap:8px}.report-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}.report-stat{background:var(--surface2);border-radius:9px;padding:12px}.report-stat strong{display:block;font-size:22px}.report-stat span{font-size:11px;color:var(--muted)}.report-table{width:100%;min-width:650px;border-collapse:collapse;font-size:12px}.report-table th,.report-table td{text-align:left;padding:8px;border-bottom:1px solid var(--border)}.report-section{margin-top:18px}.report-section h3{font-size:15px;margin:0 0 4px}.report-period{font-size:11px;color:var(--muted);margin:0 0 8px}.report-work-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:8px 0}.report-status{font-weight:700}.report-empty{padding:12px;color:var(--muted);font-size:12px;border:1px dashed var(--border);border-radius:8px}@media print{body{background:#fff!important;color:#111!important}.wrap{max-width:none;padding:0}header,#presentationPanel,#managementPanel,.modal-backdrop,.toast,#reportToolbar{display:none!important}#reportPanel{display:block!important}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;padding:12px;margin-bottom:10px}.report-table{min-width:0;font-size:10px}.report-table th,.report-table td{padding:5px}.report-section{break-inside:avoid}.report-print-title{display:block!important}}
-#cloudStatus[data-state="success"]{color:var(--green);font-weight:700}
-#cloudStatus[data-state="error"]{color:var(--red);font-weight:700}
-#cloudStatus[data-state="info"]{color:var(--muted)}
+</style>
+<style id="dark-selection-turquoise">
+:root[data-theme="dark"] .chip.active,
+:root[data-theme="dark"] .nav-tab.active,
+:root[data-theme="dark"] [aria-selected="true"],
+:root[data-theme="dark"] .selected,
+:root[data-theme="dark"] .is-selected,
+:root[data-theme="dark"] select option:checked{background-color:var(--turquoise)!important;color:#062b3d!important;border-color:var(--turquoise)!important}
+:root[data-theme="dark"] input[type="checkbox"]:checked,
+:root[data-theme="dark"] input[type="radio"]:checked{accent-color:var(--turquoise)!important}
+:root[data-theme="dark"] .cell-input:hover,
+:root[data-theme="dark"] .cell-select:hover,
+:root[data-theme="dark"] .cell-input:focus,
+:root[data-theme="dark"] .cell-select:focus{background:var(--surface2)!important;color:var(--ink)!important;border-color:var(--turquoise)!important}
+:root[data-theme="dark"] .table-wrap td:nth-child(2) .front-description:hover{background:var(--surface2)!important;color:var(--ink)!important;border-color:var(--turquoise)!important}
+:root[data-theme="dark"] .table-wrap td:nth-child(2) .front-editor,
+:root[data-theme="dark"] .table-wrap td:nth-child(2) .front-editor:hover,
+:root[data-theme="dark"] .table-wrap td:nth-child(2) .front-editor:focus{background:var(--surface2)!important;color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important;border-color:var(--turquoise)!important}
+:root[data-theme="dark"] .table-wrap td:nth-child(2) .front-editor::selection{background:var(--turquoise)!important;color:#062b3d!important}
 </style>
 </head>
 <body>
@@ -586,8 +602,9 @@ h1{font-size:24px;margin:5px 0 10px}h2{font-size:15px;margin:0 0 4px}.sub{font-s
   <div class="eyebrow">Grupo Imerge · Cronograma de Levantamentos</div>
   <h1 id="title">Dashboard de levantamentos</h1>
   <div class="meta">
-    <span class="statusbar"><span class="dot"></span> Dashboard compartilhado — <span id="cloudStatus" role="status">Conectando ao banco compartilhado…</span></span>
+    <span class="statusbar"><span class="dot"></span> Agenda reorganizada conforme o arquivo de referência — dados salvos neste navegador</span>
   </div>
+  <div id="cloudStatus" role="status" aria-live="polite" style="margin-top:8px;font-size:12px;color:var(--muted)">☁️ Preparando conexão compartilhada...</div>
   <div class="header-tools"><button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar modo de cores">🌙 Modo escuro</button></div>
   <nav class="main-nav"><button class="nav-tab active" data-tab="presentation">▤ Visão geral</button><button class="nav-tab" data-tab="management">☷ Gestão das frentes</button><button class="nav-tab" data-tab="reports">▧ Relatórios</button></nav>
 </header>
@@ -626,7 +643,7 @@ h1{font-size:24px;margin:5px 0 10px}h2{font-size:15px;margin:0 0 4px}.sub{font-s
   </div>
 </section>
 
-</div><div id="managementPanel" style="display:none"><section class="card"><div class="work-tools"><div class="work-select-row"><label for="workSelect"><b>Obra selecionada</b></label><select id="workSelect"></select></div><div class="work-actions"><button class="btn primary" id="newWorkBtn">+ Nova obra</button><button class="btn" id="editWorkBtn">Editar obra</button><button class="btn" id="deleteWorkBtn">Excluir obra</button><button class="btn" id="libraryBtn">Biblioteca de frentes</button><button class="btn" id="importBtn">Importar dados</button><button class="btn" id="exportBtn">Exportar dados</button><input id="fileInput" type="file" accept=".json,application/json" hidden></div><label class="work-finalization"><input id="workFinalized" type="checkbox"> Obra finalizada <span id="finalizedAt" class="note"></span></label><div class="work-metrics"><span>Início <b id="metaInicio">—</b></span><span>Meta <b id="metaMeta">—</b></span><span>Dias até a meta <b id="metaDias">—</b></span><span>Atualizado <b id="updated">—</b></span></div></div></section>
+</div><div id="managementPanel" style="display:none"><section class="card"><div class="work-tools"><div class="work-select-row"><label for="workSelect"><b>Obra selecionada</b></label><select id="workSelect"></select></div><div class="work-actions"><button class="btn primary" id="newWorkBtn">+ Nova obra</button><button class="btn" id="editWorkBtn">Editar obra</button><button class="btn" id="deleteWorkBtn">Excluir obra</button><button class="btn" id="libraryBtn">Biblioteca de frentes</button><button class="btn" id="importBtn">Importar dados</button><button class="btn" id="exportBtn">Exportar dados</button><button class="btn" id="resetBtn">Restaurar base inicial</button><input id="fileInput" type="file" accept=".json,application/json" hidden></div><label class="work-finalization"><input id="workFinalized" type="checkbox"> Obra finalizada <span id="finalizedAt" class="note"></span></label><div class="work-metrics"><span>Início <b id="metaInicio">—</b></span><span>Meta <b id="metaMeta">—</b></span><span>Dias até a meta <b id="metaDias">—</b></span><span>Atualizado <b id="updated">—</b></span></div></div></section>
 
 <section class="card">
   <h2>Frentes de levantamento</h2>
@@ -670,23 +687,9 @@ h1{font-size:24px;margin:5px 0 10px}h2{font-size:15px;margin:0 0 4px}.sub{font-s
 <div class="modal-backdrop" id="justificationModal"><div class="modal"><h2>Justificativa da frente</h2><div class="sub" id="justificationService"></div><div class="form-grid"><label style="grid-column:1/-1">Informe a justificativa<textarea id="justificationText" rows="4" style="resize:vertical;border:1px solid var(--border);border-radius:7px;padding:9px;background:var(--surface);color:var(--ink)"></textarea></label><label>Data de travamento<input id="justificationLockDate" type="date"></label><label>Data de resolução<input id="justificationResolutionDate" type="date"></label></div><div class="modal-actions"><button class="btn" data-close-modal>Cancelar</button><button class="btn primary" id="saveJustificationBtn">Gravar no histórico</button></div></div></div>
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const BASE = {"obra":"CAT002 - Residencial Vitta","codigo":"CAT002","inicio":"2026-10-05","meta":"2026-11-17","feriados":["2026-10-12","2026-11-02","2026-11-20"],"items":[{"id":"i01","ordem":1,"codigo":"1","frente":"Terraplenagem","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":"2026-10-06","paradoEm":null,"inicioPrev":"2026-09-28","terminoPrev":"2026-09-28"},{"id":"i02","ordem":2,"codigo":"1.1","frente":"Pavimentação","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-09-29","paradoEm":"2026-10-06","terminoPrev":"2026-09-29","justificativa":"Sem projeto de pavimentação"},{"id":"i03","ordem":3,"codigo":"2.1","frente":"Estacas","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-09-30","paradoEm":"2026-10-06","justificativa":"Estava pendente projeto de estacas do muro, liberou em 05/10/2026.","terminoPrev":"2026-09-30"},{"id":"i04","ordem":4,"codigo":"2.2","frente":"Radier","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-01","paradoEm":"2026-10-06","justificativa":"Sem projeto do radiê casa de bombas, glp e lixeira.","terminoPrev":"2026-10-01"},{"id":"i05","ordem":5,"codigo":"2.3","frente":"Blocos de Fundação","responsavel":"Alefe","duracao":0.5,"iniciadoEm":"2026-10-06","concluidoEm":null,"inicioPrev":"2026-10-02","terminoPrev":"2026-10-02"},{"id":"i06","ordem":6,"codigo":"2.4","frente":"Baldrames","responsavel":"Alefe","duracao":0.5,"iniciadoEm":"2026-10-06","concluidoEm":null,"inicioPrev":"2026-10-05","terminoPrev":"2026-10-05"},{"id":"i08","ordem":7,"codigo":"4.1","frente":"Est. Forma e Concreto - Blocos","responsavel":"Alefe","duracao":2,"iniciadoEm":"2026-10-06","concluidoEm":null,"inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i09","ordem":8,"codigo":"4.2","frente":"Est. Forma e Concreto - Edículas","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"paradoEm":"2026-10-06","justificativa":"Sem projeto do radiê casa de bombas, glp e lixeira.","inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i10","ordem":9,"codigo":"4.3","frente":"Estrutura de Aço","responsavel":"Alefe","duracao":2,"iniciadoEm":null,"concluidoEm":null,"justificativa":"Sem projeto do radiê casa de bombas, glp e lixeira.","paradoEm":"2026-10-06","inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i11","ordem":10,"codigo":"5","frente":"Alvenaria Estrutural","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"paradoEm":"2026-10-06","justificativa":"Sem projeto do radiê casa de bombas, glp e lixeira.","inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i07","ordem":11,"codigo":"3","frente":"Contenção","responsavel":"Alefe","duracao":1,"iniciadoEm":"2026-10-06","concluidoEm":null,"inicioPrev":"2026-10-05","terminoPrev":"2026-10-09","autoInicio":false,"autoTermino":false},{"id":"i13","ordem":12,"codigo":"7","frente":"Shafts e Fechamentos","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-13","terminoPrev":"2026-10-13","autoInicio":false,"autoTermino":true},{"id":"i14","ordem":13,"codigo":"8","frente":"Impermeabilização","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-14","terminoPrev":"2026-10-14","autoInicio":true},{"id":"i15","ordem":14,"codigo":"9","frente":"Revestimento de Piso e Pavimentação","responsavel":"Alefe","duracao":3,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-15","terminoPrev":"2026-10-19"},{"id":"i16","ordem":15,"codigo":"10 e 11","frente":"Marmoraria","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-20","terminoPrev":"2026-10-20"},{"id":"i17","ordem":16,"codigo":"12","frente":"Revestimento de Paredes Internas","responsavel":"Alefe","duracao":2,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-20","terminoPrev":"2026-10-21","autoInicio":false,"autoTermino":true},{"id":"i18","ordem":17,"codigo":"13","frente":"Teto e Forros","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-22","terminoPrev":"2026-10-22"},{"id":"i19","ordem":18,"codigo":"14","frente":"Revestimento de Paredes Externas","responsavel":"Alefe","duracao":2,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-23","terminoPrev":"2026-10-26"},{"id":"i41","ordem":19,"codigo":"28","frente":"Fachada","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-27","terminoPrev":"2026-10-27"},{"id":"i42","ordem":20,"codigo":"29","frente":"Esquadrias de Madeira","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-28","terminoPrev":"2026-10-28"},{"id":"i43","ordem":21,"codigo":"30","frente":"Esquadrias de Alumínio","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-29","terminoPrev":"2026-10-29"},{"id":"i44","ordem":22,"codigo":"30","frente":"Esquadrias de Vidro","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-10-30","terminoPrev":"2026-10-30"},{"id":"i45","ordem":23,"codigo":"31","frente":"Serralheria","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-02","terminoPrev":"2026-11-02"},{"id":"i46","ordem":24,"codigo":"32","frente":"Bancadas","responsavel":"Alefe","duracao":1,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-03","terminoPrev":"2026-11-03"},{"id":"i49","ordem":25,"codigo":"35","frente":"Paisagismo","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-04","terminoPrev":"2026-11-04","autoTermino":true},{"id":"i47","ordem":26,"codigo":"33","frente":"LMA","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-04","terminoPrev":"2026-11-04","autoTermino":true,"autoInicio":false},{"id":"i48","ordem":27,"codigo":"34","frente":"Cobertura","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-05","terminoPrev":"2026-11-05"},{"id":"i50","ordem":28,"codigo":"36","frente":"Mobiliário","responsavel":"Alefe","duracao":0.5,"iniciadoEm":null,"concluidoEm":null,"inicioPrev":"2026-11-05","terminoPrev":"2026-11-05","autoInicio":false}],"versao":"1.0.0"};
 const KEY = "dashboard_levantamentos_datas_organizadas_v3";
-const CLOUD_SUPABASE_URL = "https://awxzjcaelbxlqhldxvns.supabase.co";
-const CLOUD_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_s6iesRwV6kFlU_xXLIzSWg_U0n2FYgA";
-const CLOUD_TABLE = "dashboard_levantamentos_public";
-let cloudClient = null;
-let cloudReady = false;
-let cloudApplying = false;
-let cloudSaving = false;
-let cloudDirty = false;
-let cloudSaveQueued = false;
-let cloudSaveTimer = null;
-let cloudRevision = 0;
-let cloudChannel = null;
-let hasSavedLocalDatabase = false;
 let database = null;
 let activeWorkId = null;
 let migrationFailed = false;
@@ -707,7 +710,7 @@ function saveMigration(oldText,next){const backupKey=KEY+"_legacy_backup",payloa
 function load(){
   try{
     const saved=localStorage.getItem(KEY);
-    if(saved){const s=JSON.parse(saved);if(s&&s.schemaVersion===2&&Array.isArray(s.obras)){hasSavedLocalDatabase=true;database=s;const selected=s.obras.find(o=>o.id===s.activeWorkId)||s.obras[0];activeWorkId=selected?.id;return selected||clone(BASE)}if(s&&Array.isArray(s.items)){hasSavedLocalDatabase=true;const migrated=clone(s);const id="obra-original";database={schemaVersion:2,migratedAt:new Date().toISOString(),activeWorkId:id,bibliotecaFrentes:[],obras:[{...migrated,id,codigo:"CAT002",nome:"CAT002 - Residencial Vitta",obra:"CAT002 - Residencial Vitta",inicio:migrated.inicio,meta:migrated.meta}]};database.bibliotecaFrentes=libraryFromItems(migrated.items);attachLibraryIds(database.obras[0]);activeWorkId=id;try{saveMigration(saved,database);}catch(e){migrationFailed=true;}return database.obras[0];}}
+    if(saved){const s=JSON.parse(saved);if(s&&s.schemaVersion===2&&Array.isArray(s.obras)){database=s;const selected=s.obras.find(o=>o.id===s.activeWorkId)||s.obras[0];activeWorkId=selected?.id;return selected||clone(BASE)}if(s&&Array.isArray(s.items)){const migrated=clone(s);const id="obra-original";database={schemaVersion:2,migratedAt:new Date().toISOString(),activeWorkId:id,bibliotecaFrentes:[],obras:[{...migrated,id,codigo:"CAT002",nome:"CAT002 - Residencial Vitta",obra:"CAT002 - Residencial Vitta",inicio:migrated.inicio,meta:migrated.meta}]};database.bibliotecaFrentes=libraryFromItems(migrated.items);attachLibraryIds(database.obras[0]);activeWorkId=id;try{saveMigration(saved,database);}catch(e){migrationFailed=true;}return database.obras[0];}}
   }catch(e){}
   const first=clone(BASE);first.id="obra-original";first.codigo="CAT002";first.nome="CAT002 - Residencial Vitta";first.obra=first.nome;database={schemaVersion:2,migratedAt:new Date().toISOString(),activeWorkId:first.id,bibliotecaFrentes:libraryFromItems(first.items),obras:[first]};attachLibraryIds(first);activeWorkId=first.id;return first;
 }
@@ -721,7 +724,6 @@ function save(){
   persistedSnapshots.set(activeWorkId,snapshot);
   database.activeWorkId=activeWorkId;if(!migrationFailed)localStorage.setItem(KEY,JSON.stringify(database));
   const updated=document.getElementById("updated");if(updated)updated.textContent=new Date(state.updatedAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
-  if(cloudReady&&!cloudApplying)scheduleCloudSave();
 }
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function from(s){if(!s)return null;let p=s.split("-").map(Number);return new Date(p[0],p[1]-1,p[2])}
@@ -784,131 +786,6 @@ function getGlobalDates(s){
   };
 }
 
-function setCloudStatus(message,kind="info"){
-  const el=document.getElementById("cloudStatus");
-  if(!el)return;
-  el.textContent=message;
-  el.dataset.state=kind;
-  el.title=kind==="error"?"A sincronização precisa de atenção.":"Estado da sincronização compartilhada";
-}
-function localCloudPayload(){
-  if(!database)throw new Error("Não há dados locais disponíveis para sincronizar.");
-  database.activeWorkId=activeWorkId;
-  return clone(database);
-}
-function applyCloudPayload(payload,revision){
-  if(!payload||payload.schemaVersion!==2||!Array.isArray(payload.obras)||!payload.obras.length)
-    throw new Error("A base compartilhada possui um formato inválido.");
-  cloudApplying=true;
-  try{
-    database=clone(payload);
-    const selected=database.obras.find(w=>w.id===database.activeWorkId)||database.obras[0];
-    activeWorkId=selected.id;
-    state=selected;
-    if(!Array.isArray(state.justificationHistory))state.justificationHistory=[];
-    persistedSnapshots=new Map(database.obras.map(work=>[work.id,workSnapshot(work)]));
-    cloudRevision=Number(revision)||0;
-    render();
-  }finally{cloudApplying=false;}
-}
-function scheduleCloudSave(){
-  if(!cloudReady||cloudApplying)return;
-  cloudDirty=true;
-  cloudSaveQueued=true;
-  clearTimeout(cloudSaveTimer);
-  cloudSaveTimer=setTimeout(flushCloudSave,850);
-}
-async function flushCloudSave(){
-  if(!cloudReady||cloudApplying)return;
-  if(cloudSaving)return;
-  cloudSaving=true;
-  cloudSaveQueued=false;
-  const expectedRevision=cloudRevision;
-  try{
-    const payload=localCloudPayload();
-    let result;
-    if(expectedRevision===0){
-      result=await cloudClient.from(CLOUD_TABLE).insert({id:1,payload}).select("revision,updated_at").maybeSingle();
-    }else{
-      result=await cloudClient.from(CLOUD_TABLE).update({payload}).eq("id",1).eq("revision",expectedRevision).select("revision,updated_at").maybeSingle();
-    }
-    if(result.error)throw result.error;
-    if(!result.data){
-      cloudReady=false;
-      setCloudStatus("Conflito de edição. Atualize a página.","error");
-      toast("Outra pessoa salvou alterações antes desta gravação. Exporte seus dados locais se precisar preservá-los e atualize a página.");
-      return;
-    }
-    cloudRevision=Number(result.data.revision)||expectedRevision+1;
-    cloudDirty=cloudSaveQueued;
-    setCloudStatus("Sincronizado às "+new Date(result.data.updated_at||Date.now()).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),"success");
-  }catch(error){
-    console.error("Falha na sincronização do Dashboard:",error);
-    setCloudStatus("Falha ao sincronizar. Verifique a conexão.","error");
-    toast("Não foi possível salvar no banco compartilhado. Seus dados locais foram mantidos neste navegador.");
-  }finally{
-    cloudSaving=false;
-    if(cloudSaveQueued&&cloudReady){clearTimeout(cloudSaveTimer);cloudSaveTimer=setTimeout(flushCloudSave,200);}
-  }
-}
-function subscribeCloudChanges(){
-  if(!cloudClient)return;
-  cloudChannel=cloudClient.channel("dashboard-levantamentos-public-sync")
-    .on("postgres_changes",{event:"*",schema:"public",table:CLOUD_TABLE,filter:"id=eq.1"},event=>{
-      const row=event.new;
-      if(!row||!row.payload)return;
-      const incomingRevision=Number(row.revision)||0;
-      if(incomingRevision<=cloudRevision)return;
-      if(cloudSaving)return;
-      if(cloudDirty){
-        cloudReady=false;
-        setCloudStatus("Atualização concorrente. Atualize a página.","error");
-        toast("Outra pessoa alterou o dashboard enquanto você editava. Exporte seus dados locais se necessário e atualize a página para carregar a versão compartilhada.");
-        return;
-      }
-      try{
-        applyCloudPayload(row.payload,incomingRevision);
-        setCloudStatus("Atualizado por outro usuário às "+new Date(row.updated_at||Date.now()).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),"success");
-      }catch(error){console.error(error);setCloudStatus("Erro ao receber atualização.","error");}
-    })
-    .subscribe(status=>{
-      if(status==="CHANNEL_ERROR"||status==="TIMED_OUT")setCloudStatus("Tempo real indisponível. Recarregue a página.","error");
-    });
-}
-async function initializeCloudSync(){
-  try{
-    if(!window.supabase||typeof window.supabase.createClient!=="function")throw new Error("A biblioteca de conexão não foi carregada. Verifique sua internet.");
-    cloudClient=window.supabase.createClient(CLOUD_SUPABASE_URL,CLOUD_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
-    setCloudStatus("Conectando…");
-    const {data,error}=await cloudClient.from(CLOUD_TABLE).select("id,payload,revision,updated_at").eq("id",1).maybeSingle();
-    if(error)throw error;
-    if(data){
-      applyCloudPayload(data.payload,data.revision);
-      cloudReady=true;
-      setCloudStatus("Sincronizado às "+new Date(data.updated_at||Date.now()).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),"success");
-    }else if(hasSavedLocalDatabase){
-      const payload=localCloudPayload();
-      const seeded=await cloudClient.from(CLOUD_TABLE).insert({id:1,payload}).select("revision,updated_at").maybeSingle();
-      if(seeded.error){
-        const retry=await cloudClient.from(CLOUD_TABLE).select("id,payload,revision,updated_at").eq("id",1).maybeSingle();
-        if(retry.error||!retry.data)throw seeded.error;
-        applyCloudPayload(retry.data.payload,retry.data.revision);
-      }else{cloudRevision=Number(seeded.data?.revision)||1;}
-      cloudReady=true;
-      setCloudStatus("Base local publicada e sincronizada","success");
-    }else{
-      cloudRevision=0;
-      cloudReady=true;
-      setCloudStatus("Banco compartilhado vazio. Importe seu backup para iniciar.","info");
-    }
-    subscribeCloudChanges();
-  }catch(error){
-    console.error("Não foi possível iniciar a sincronização compartilhada:",error);
-    cloudReady=false;
-    setCloudStatus("Não conectado. Os dados ficam somente neste navegador.","error");
-    toast("O dashboard abriu, mas não conectou ao banco compartilhado. Verifique a configuração e a conexão.");
-  }
-}
 function render(){
     if(!state.sched)state.sched={};if(!state.feriados)state.feriados=[];
   const s=schedule();const today=iso(new Date());
@@ -1113,11 +990,12 @@ function renderTable(s){
     if(state.finalizadaEm)return;
     const ordered=[...state.items].sort((a,b)=>(Number(a.ordem)||0)-(Number(b.ordem)||0));
     const startIndex=ordered.findIndex(x=>x.id===it.id);if(startIndex<0)return;
-    if(!confirm("Recalcular as datas a partir de "+(it.codigo?it.codigo+" · ":"")+(it.frente||"esta frente")+" e das frentes seguintes? As datas anteriores serão preservadas. As datas manuais desta frente e das seguintes serão substituídas pelo cálculo automático."))return;
-    ordered.slice(startIndex).forEach(x=>{x.autoInicio=true;x.autoTermino=true;});
-    recalcScheduleFrom(startIndex,false);
+    if(!confirm("Recalcular as datas das frentes seguintes a "+(it.codigo?it.codigo+" · ":"")+(it.frente||"esta frente")+"? A frente selecionada e as anteriores serão preservadas; somente as datas posteriores serão recalculadas conforme a duração e o responsável."))return;
+    const nextIndex=startIndex+1;
+    ordered.slice(nextIndex).forEach(x=>{x.autoInicio=true;x.autoTermino=true;});
+    recalcScheduleFrom(nextIndex,false);
     render();
-    toast("Datas recalculadas desta frente em diante; as anteriores foram preservadas.");
+    toast(nextIndex<ordered.length?"Datas das frentes seguintes recalculadas; a frente selecionada foi preservada.":"Não há frentes posteriores para recalcular.");
   }));
 
 document.querySelectorAll("[data-checkpoint]").forEach(el=>el.addEventListener("change",()=>{
@@ -1257,6 +1135,7 @@ document.getElementById("addLibraryFront").onclick=()=>{const nome=document.getE
 document.getElementById("frontSearch").addEventListener("input",e=>document.querySelectorAll("#frontPicker label").forEach(l=>l.style.display=l.dataset.frontName.includes(e.target.value.toLowerCase())?"block":"none"));document.getElementById("selectAllFronts").onclick=()=>document.querySelectorAll("#frontPicker input").forEach(x=>x.checked=true);document.getElementById("clearFronts").onclick=()=>document.querySelectorAll("#frontPicker input").forEach(x=>x.checked=false);document.querySelectorAll("[data-close-modal]").forEach(b=>b.onclick=()=>b.closest(".modal-backdrop").classList.remove("open"));
 document.getElementById("statusFilter").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");statusFilter=b.dataset.v;render()});
 document.getElementById("search").addEventListener("input",e=>{query=e.target.value;renderTable(schedule())});
+document.getElementById("resetBtn").addEventListener("click",()=>{if(confirm("Restaurar a base inicial? Todas as obras, frentes e alterações atuais serão substituídas.")){const first=clone(BASE);first.id="obra-original";first.nome=first.obra="CAT002 - Residencial Vitta";first.codigo="CAT002";database={schemaVersion:2,migratedAt:new Date().toISOString(),activeWorkId:first.id,bibliotecaFrentes:libraryFromItems(first.items),obras:[first]};attachLibraryIds(first);activeWorkId=first.id;state=first;render();toast("Base inicial restaurada")}});
 const BACKUP_SYSTEM_ID="dashboard-levantamentos",BACKUP_FORMAT_VERSION=1;
 function buildDashboardBackup(){try{save()}catch(err){console.warn("O backup usará o estado em memória; não foi possível sincronizar o armazenamento local.",err)}if(!database)throw Error("Não há dados do dashboard para exportar.");database.activeWorkId=activeWorkId;return{systemId:BACKUP_SYSTEM_ID,backupFormatVersion:BACKUP_FORMAT_VERSION,exportedAt:new Date().toISOString(),storageKey:KEY,settings:{activeWorkId,theme:localStorage.getItem(themeKey)==="dark"?"dark":"light"},database:clone(database)}}
 function validateDashboardBackup(payload){let db,settings={};if(payload&&payload.systemId===BACKUP_SYSTEM_ID){if(payload.backupFormatVersion!==BACKUP_FORMAT_VERSION)throw Error("A versão do formato de backup não é compatível.");if(!Number.isFinite(Date.parse(payload.exportedAt||"")))throw Error("A data de exportação do backup é inválida.");if(!payload.database||typeof payload.database!=="object")throw Error("O backup não contém a base de dados.");db=clone(payload.database);settings=payload.settings&&typeof payload.settings==="object"?payload.settings:{}}else if(payload&&payload.schemaVersion===2&&Array.isArray(payload.obras)){db=clone(payload)}else if(payload&&Array.isArray(payload.items)){const w={...clone(payload),id:payload.id||"obra-importada",nome:payload.nome||payload.obra||"Obra importada"};db={schemaVersion:2,activeWorkId:w.id,bibliotecaFrentes:libraryFromItems(w.items),obras:[w]};for(const item of w.items){const f=db.bibliotecaFrentes.find(lib=>lib.codigo===String(item.codigo||"")&&lib.nome===String(item.frente||""));if(f&&!item.libraryId)item.libraryId=f.id}}else throw Error("O arquivo não é um backup reconhecido do Dashboard de Levantamentos.");if(db.schemaVersion!==2||!Array.isArray(db.obras)||!db.obras.length)throw Error("A estrutura do backup não contém obras válidas.");const workIds=new Set();for(const work of db.obras){if(!work||typeof work!=="object"||typeof work.id!=="string"||!work.id.trim()||workIds.has(work.id))throw Error("Há obras sem identificador ou com identificadores duplicados.");workIds.add(work.id);if(!Array.isArray(work.items))throw Error("A obra "+(work.nome||work.obra||work.id)+" não contém uma lista válida de frentes.");const itemIds=new Set();for(const item of work.items){if(!item||typeof item!=="object"||typeof item.id!=="string"||!item.id.trim()||itemIds.has(item.id))throw Error("Há frentes sem identificador ou com identificadores duplicados na obra "+(work.nome||work.id)+".");itemIds.add(item.id)}}if(db.bibliotecaFrentes==null)db.bibliotecaFrentes=libraryFromItems(db.obras.flatMap(w=>w.items));if(!Array.isArray(db.bibliotecaFrentes))throw Error("A biblioteca de frentes possui estrutura inválida.");const libraryIds=new Set();for(const front of db.bibliotecaFrentes){if(!front||typeof front!=="object"||typeof front.id!=="string"||!front.id.trim()||libraryIds.has(front.id))throw Error("A biblioteca contém registros sem identificador ou identificadores duplicados.");libraryIds.add(front.id)}if(!workIds.has(db.activeWorkId))db.activeWorkId=db.obras[0].id;if(settings.theme!=="dark"&&settings.theme!=="light")settings.theme=null;normalizeFirstWorkName(db);return{database:db,settings}}
@@ -1266,7 +1145,6 @@ document.getElementById("exportBtn").addEventListener("click",()=>{try{const bac
 document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("fileInput").click());
 document.getElementById("fileInput").addEventListener("change",e=>{const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onerror=()=>{alert("Não foi possível ler o arquivo selecionado.");e.target.value=""};reader.onload=()=>{try{const validated=validateDashboardBackup(JSON.parse(reader.result)),db=validated.database,workCount=db.obras.length,frontCount=db.obras.reduce((sum,w)=>sum+w.items.length,0),exportDate=reader.result&&JSON.parse(reader.result).exportedAt?new Date(JSON.parse(reader.result).exportedAt).toLocaleString("pt-BR"):"data não informada",message="Backup: "+exportDate+"\nObras: "+workCount+"\nFrentes: "+frontCount+"\n\nA restauração substituirá todos os dados atuais. Deseja continuar?";if(!confirm(message))return;restoreDashboardBackup(validated);toast("Backup restaurado: "+workCount+" obras e "+frontCount+" frentes.")}catch(err){alert(err.message||"Arquivo JSON inválido ou incompatível. Os dados atuais não foram alterados.")}finally{e.target.value=""}};reader.readAsText(file)});
 render();
-initializeCloudSync();
 if(migrationFailed)toast("A migração não pôde ser gravada. Os dados antigos foram preservados e as alterações desta sessão não serão persistidas.");
 </script>
 
@@ -1308,6 +1186,138 @@ if(migrationFailed)toast("A migração não pôde ser gravada. Os dados antigos 
 })();
 </script>
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script id="shared-cloud-persistence">
+(function(){
+  "use strict";
+  const SUPABASE_URL = "https://awxzjcaelbxlqhldxvns.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_s6iesRwV6kFlU_xXLIzSWg_U0n2FYgA";
+  const TABLE = "dashboard_levantamentos_public";
+  const ROW_ID = 1;
+  const statusEl = document.getElementById("cloudStatus");
+  let client = null;
+  let cloudReady = false;
+  let cloudInitialized = false;
+  let cloudRevision = 0;
+  let saveTimer = null;
+  let saving = false;
+  let pendingRemote = false;
+  let channel = null;
+
+  function status(message, kind){
+    if(!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.style.color = kind === "error" ? "var(--red)" : kind === "ok" ? "var(--green)" : "var(--muted)";
+  }
+  function validDatabase(value){
+    return !!value && value.schemaVersion === 2 && Array.isArray(value.obras) && Array.isArray(value.bibliotecaFrentes);
+  }
+  function applyCloudPayload(payload, revision){
+    if(!validDatabase(payload)) throw new Error("Os dados recebidos da nuvem possuem estrutura incompatível.");
+    database = clone(payload);
+    if(!database.obras.length) throw new Error("O banco compartilhado não contém obras válidas.");
+    if(!database.obras.some(w=>w.id===database.activeWorkId)) database.activeWorkId=database.obras[0].id;
+    activeWorkId = database.activeWorkId;
+    state = database.obras.find(w=>w.id===activeWorkId);
+    persistedSnapshots = new Map(database.obras.map(work=>[work.id,workSnapshot(work)]));
+    cloudRevision = Number(revision)||1;
+    pendingRemote = false;
+    cloudReady = true;
+    render();
+    status("☁️ Conectado e sincronizado com a nuvem", "ok");
+  }
+  async function fetchCloud(){
+    const {data,error}=await client.from(TABLE).select("payload,revision,updated_at").eq("id",ROW_ID).maybeSingle();
+    if(error) throw error;
+    return data;
+  }
+  async function initialize(){
+    try{
+      if(!window.supabase || typeof window.supabase.createClient!=="function") throw new Error("A biblioteca de conexão não foi carregada. Verifique sua conexão com a internet e atualize a página.");
+      client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+      const row=await fetchCloud();
+      if(row){
+        applyCloudPayload(row.payload,row.revision);
+        cloudInitialized=true;
+      }else{
+        cloudReady=true;
+        status("☁️ Banco compartilhado vazio. Use Importar dados para carregar seu backup.", "error");
+      }
+      channel=client.channel("dashboard-levantamentos-public-sync")
+        .on("postgres_changes",{event:"UPDATE",schema:"public",table:TABLE,filter:"id=eq."+ROW_ID},async payload=>{
+          const next=payload.new;
+          if(!next || Number(next.revision)<=cloudRevision) return;
+          if(saveTimer || saving){ pendingRemote=true; status("⚠️ Outra pessoa atualizou os dados. Aguarde a sincronização ou recarregue para receber a versão mais recente.","error"); return; }
+          try{applyCloudPayload(next.payload,next.revision);status("☁️ Alterações de outro usuário recebidas", "ok");}
+          catch(e){status("⚠️ Não foi possível aplicar a atualização recebida: "+e.message,"error");}
+        }).subscribe((state)=>{
+          if(state==="CHANNEL_ERROR" || state==="TIMED_OUT") status("⚠️ Conexão em tempo real instável. A gravação continuará sendo verificada.","error");
+        });
+    }catch(error){
+      cloudReady=false;
+      status("⚠️ Não foi possível conectar ao banco compartilhado: "+(error.message||error),"error");
+      console.error("Falha na inicialização do Supabase:",error);
+    }
+  }
+  async function persistCloud(){
+    if(!cloudReady || !cloudInitialized || !client || saving) return;
+    if(!validDatabase(database)){status("⚠️ Os dados locais não possuem uma estrutura válida para sincronização.","error");return;}
+    saving=true;
+    status("☁️ Sincronizando alterações...", "normal");
+    try{
+      const payload=clone(database);
+      payload.activeWorkId=activeWorkId;
+      if(cloudRevision===0){
+        const {data,error}=await client.from(TABLE).insert({id:ROW_ID,payload}).select("revision").single();
+        if(error){
+          if(error.code==="23505"){
+            const latest=await fetchCloud();
+            if(latest){cloudRevision=Number(latest.revision)||1;pendingRemote=true;status("⚠️ O banco já foi inicializado em outra sessão. Recarregue a página para evitar sobrescrever os dados.","error");return;}
+          }
+          throw error;
+        }
+        cloudRevision=Number(data.revision)||1;
+      }else{
+        const {data,error}=await client.from(TABLE).update({payload}).eq("id",ROW_ID).eq("revision",cloudRevision).select("revision").maybeSingle();
+        if(error) throw error;
+        if(!data){
+          pendingRemote=true;
+          status("⚠️ Conflito de edição: outra pessoa salvou primeiro. Seus dados locais foram mantidos. Recarregue para receber a versão compartilhada antes de continuar.","error");
+          return;
+        }
+        cloudRevision=Number(data.revision)||cloudRevision+1;
+      }
+      pendingRemote=false;
+      status("☁️ Todas as alterações foram sincronizadas", "ok");
+    }catch(error){
+      status("⚠️ Falha ao sincronizar. Seus dados permanecem neste navegador. Tente novamente: "+(error.message||error),"error");
+      console.error("Falha ao salvar no Supabase:",error);
+    }finally{saving=false;}
+  }
+  function scheduleSave(){
+    if(!cloudReady || !cloudInitialized) return;
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(()=>{saveTimer=null;persistCloud();},700);
+  }
+  // Intercepta o salvamento central do dashboard sem alterar suas regras locais.
+  const originalSave=save;
+  save=function(){originalSave();scheduleSave();};
+  // A importação de backup deve atualizar a base local e, em seguida, enviá-la à nuvem.
+  const originalRestore=restoreDashboardBackup;
+  restoreDashboardBackup=function(validated){const result=originalRestore(validated);cloudInitialized=true;scheduleSave();return result;};
+  // Restaurar a base inicial também é uma alteração compartilhada.
+  const resetButton=document.getElementById("resetBtn");
+  if(resetButton){resetButton.addEventListener("click",()=>{setTimeout(()=>{if(cloudReady)scheduleSave();},0);});}
+  // Ao alternar obras, garante que a seleção ativa seja persistida.
+  const workSelect=document.getElementById("workSelect");
+  if(workSelect) workSelect.addEventListener("change",()=>scheduleSave());
+  window.addEventListener("beforeunload",()=>{if(saveTimer){clearTimeout(saveTimer);saveTimer=null;}});
+  initialize();
+})();
+</script>
 
 
 </body>
